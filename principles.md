@@ -8,10 +8,13 @@ Each item begins with a quotable statement in bold followed by disambiguating ex
 Initially we expect this to serve as a guide to discussion and later an outline for a more stand alone document.
 
 We will eventually mine historic talks and videos to be sure original intentions will be faithfully reconsidered.
+Asperational principles will be noted as "new".
 
 ## Reading
 
 __One Width.__ Adjust column width and scale such that text flows in a consistent and highly readable ten words on all devices.
+
+__Dark Mode.__ New. Detect and respect when a viewer has chosen low brightness background due to situation or preference.
 
 ## Authoring
 
@@ -20,3 +23,5 @@ __Simple Sequence.__ Constrain items of a story, actions of a journal, and panel
 ## Curating
 
 ## Administrating
+
+__Limited Resource.__ New. Admin can set limits and authors can see how choices advance toward or exceed these limits.
