@@ -10,6 +10,10 @@ Initially we expect this to serve as a guide to discussion and later an outline 
 We will eventually mine historic talks and videos to be sure original intentions will be faithfully reconsidered.
 Asperational principles will be noted as "new".
 
+- Federated Wiki Videos (from the first year) [wiki](http://video.fed.wiki.org/)
+- Federated Wiki Design Principles (from Splash 2014) [wiki](http://splash.fed.wiki.org/view/welcome-visitors/view/splash-2014/view/federated-wiki-design-principles)
+- New CSS Test Case (classes defined and used) [wiki](http://ward.dojo.fed.wiki/new-css-test-case.html)
+
 ## Reading
 
 __One Width.__ Adjust column width and scale such that text flows in a consistent and highly readable ten words on all devices.
