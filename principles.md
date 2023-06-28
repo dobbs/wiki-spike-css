@@ -25,6 +25,8 @@ __Nav History__ Respect the browser back and forward controls to undo and redo n
 
 __Item Inputs__ New. Show where items provide information used by others.
 
+__Incremental Search__ Consistent and meaningful terminology with tool-tips for alternatives.
+
 ## Authoring
 
 __Simple Sequence.__ Constrain items of a story, actions of a journal, and panels of a lineup in a flat linear order using only links for additional structure. This ensures that reorganizations are easily interpreted.
