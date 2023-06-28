@@ -13,12 +13,17 @@ Asperational principles will be noted as "new".
 - Federated Wiki Videos (from the first year) [wiki](http://video.fed.wiki.org/)
 - Federated Wiki Design Principles (from Splash 2014) [wiki](http://splash.fed.wiki.org/view/welcome-visitors/view/splash-2014/view/federated-wiki-design-principles)
 - New CSS Test Case (classes defined and used) [wiki](http://ward.dojo.fed.wiki/new-css-test-case.html)
+- Mobile Gestures For Wiki (suggestions) [wiki](http://ward.asia.wiki.org/view/touch-support/view/mobile-gestures-for-wiki/view/flutter-client)
 
 ## Reading
 
 __One Width.__ Adjust column width and scale such that text flows in a consistent and highly readable ten words on all devices.
 
 __Dark Mode.__ New. Detect and respect when a viewer has chosen low brightness background due to situation or preference.
+
+__Nav History__ Respect the browser back and forward controls to undo and redo navigation.
+
+__Item Inputs__ New. Show where items provide information used by others.
 
 ## Authoring
 
