@@ -45,9 +45,9 @@ __Markup.__ Edit operation allows revision of item text which will permentantly 
 
 __Direct Editing.__ Some items expose direct modifications which are made permenant by recording the Action. E.g. Map, others?
 
-__Direct Configuration.__ Some items expose server reconfigurations made permenant and non-reversable by server writes. E.g. Assets, Plugmatic, others?
-
 ## Curating
+
+__Direct Configuration.__ Some items expose server reconfigurations made permenant and non-reversable by server writes. E.g. Assets, Plugmatic, Register, others?
 
 ## Administrating
 
