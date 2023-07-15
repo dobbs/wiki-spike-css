@@ -45,6 +45,8 @@ __Markup.__ Edit operation allows revision of item text which will permentantly 
 
 __Direct Editing.__ Some items expose direct modifications which are made permenant by recording the Action. E.g. Map, Markdown, FiveStar, Journalmatic others?
 
+__Voice Editing.__ New. Wiki relies on complete sentences which are hard to enter on phone keyboards. Can we dictate edits to pages? Any kind of edit anywhere on a page?
+
 ## Administrating
 
 __Limited Resource.__ New. Admin can set limits and authors can see how choices advance toward or exceed these limits.
