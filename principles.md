@@ -43,11 +43,11 @@ __Refactoring.__ Edit operation moves items within and between pages, extending 
 
 __Markup.__ Edit operation allows revision of item text which will permentantly change the appearence or behavior of an item.
 
-__Direct Editing.__ Some items expose direct modifications which are made permenant by recording the Action. E.g. Map, others?
+__Direct Editing.__ Some items expose direct modifications which are made permenant by recording the Action. E.g. Map, Markdown, FiveStar, Journalmatic others?
 
 ## Curating
 
-__Direct Configuration.__ Some items expose server reconfigurations made permenant and non-reversable by server writes. E.g. Assets, Plugmatic, Register, others?
+__Direct Configuration.__ Some items expose server reconfigurations made permenant and non-reversable by server writes. E.g. Assets, Plugmatic, Flagmatic, Register, others?
 
 ## Administrating
 
