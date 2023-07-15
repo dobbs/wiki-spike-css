@@ -31,6 +31,8 @@ __Lineup.__ Links stack panels replacing or adding to those previously viewed fr
 
 __Flags.__ Sites in the federation are identified by consistently generated images representing both wiki and author's brand. [video](http://video.fed.wiki.org/10-scrolling-history-tests.html)
 
+__Direct Manipulation.__ Some items expose temporary adjustments such as hover, drill-down, pan and zoom. E.g. Map, Assets, Frame, others?
+
 ## Authoring
 
 __Simple Sequence.__ Constrain items of a story, actions of a journal, and panels of a lineup in a flat linear order using only links for additional structure. This ensures that reorganizations are easily interpreted.
@@ -38,6 +40,12 @@ __Simple Sequence.__ Constrain items of a story, actions of a journal, and panel
 __Visible History.__ An author can see change at other's hands and retrieve desired improvements. [video](http://video.fed.wiki.org/01-story-and-journal.html)
 
 __Refactoring.__ Edit operation moves items within and between pages, extending to retrival from remote sites. [video](http://video.fed.wiki.org/02-cross-page-referencing.html)
+
+__Markup.__ Edit operation allows revision of item text which will permentantly change the appearence or behavior of an item.
+
+__Direct Editing.__ Some items expose direct modifications which are made permenant by recording the Action. E.g. Map, others?
+
+__Direct Configuration.__ Some items expose server reconfigurations made permenant and non-reversable by server writes. E.g. Assets, Plugmatic, others?
 
 ## Curating
 
