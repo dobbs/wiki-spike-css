@@ -35,6 +35,8 @@ __Direct Manipulation.__ Some items expose temporary adjustments such as hover, 
 
 ## Authoring
 
+__Natural Extension.__ The act of reading extends easily into writing in an unchanged context.
+
 __Simple Sequence.__ Constrain items of a story, actions of a journal, and panels of a lineup in a flat linear order using only links for additional structure. This ensures that reorganizations are easily interpreted.
 
 __Visible History.__ An author can see change at other's hands and retrieve desired improvements. [video](http://video.fed.wiki.org/01-story-and-journal.html)
