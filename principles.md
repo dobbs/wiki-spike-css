@@ -51,6 +51,8 @@ __Voice Editing.__ New. Wiki relies on complete sentences which are hard to ente
 
 __Ghost Pages.__ The lineup has room for past and future versions of a page easily compared with the current version on the server.
 
+__Collaborative Reference.__ Consult page context to find links, images, assets, and not yet scripts.
+
 ## Administrating
 
 __Limited Resource.__ New. Admin can set limits and authors can see how choices advance toward or exceed these limits.
