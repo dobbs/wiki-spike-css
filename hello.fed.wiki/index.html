@@ -1,10 +1,29 @@
 <html>
   <body>
-    <h1>Welcome Visitors</h1>
-    <p>Feel free to explore a decade of creative collaboration using this next-generation application.</p>
-    <p>(Oops. Nothing here yet.)</p>
-    <p>Look behind the curtain to see how we talk about this work in progress<br>
-    Old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> pages.
-    </p>
+    <div id=result>
+      <p>(Oops. Nothing here yet?)</p>
+      <p>Try old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> site.</p>
+    </div>
+    <script type=module>
+      const asSlug = (title) => title.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
+      const params = Object.fromEntries(new URLSearchParams(location.search).entries())
+      const site = params.site || 'hello.fed.wiki'
+      const slug = params.slug || 'welcome-visitors'
+      const page = await fetch(`http://${site}/${slug}.json`).then(res => res.json())
+      window.result.innerHTML = page.story
+        .filter(item => item.type == 'paragraph')
+        .map(item => `<p>${link(escape(item.text))}</p>`)
+        .join("\n")
+
+      function escape(text) {
+        return text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      }
+
+      function link(text) {
+        const home = `http://hello.fed.wiki/assets/home/index.html`
+        return text.replace(/\[\[(.*?)\]\]/g,
+          (_,title) => `<a href="${home}?site=${site}&slug=${asSlug(title)}">${title}</a>`)
+      }
+    </script>
   </body>
 </html>
