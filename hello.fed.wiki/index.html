@@ -1,29 +1,37 @@
 <html>
+  <head>
+    <link href="style.css" rel="stylesheet">
+  </head>
   <body>
     <div id=result>
       <p>(Oops. Nothing here yet?)</p>
       <p>Try old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> site.</p>
     </div>
     <script type=module>
-      const asSlug = (title) => title.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
+
+      const home = `http://hello.fed.wiki/assets/home/index.html`
       const params = Object.fromEntries(new URLSearchParams(location.search).entries())
       const site = params.site || 'hello.fed.wiki'
       const slug = params.slug || 'welcome-visitors'
-      const page = await fetch(`http://${site}/${slug}.json`).then(res => res.json())
-      window.result.innerHTML = page.story
-        .filter(item => item.type == 'paragraph')
-        .map(item => `<p>${link(escape(item.text))}</p>`)
-        .join("\n")
+      render(await resolve(site,slug))
 
-      function escape(text) {
-        return text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      // retrieve page json following all the collaborative rules
+      async function resolve(site,slug) {
+        return await fetch(`http://${site}/${slug}.json`).then(res => res.json())
       }
 
-      function link(text) {
-        const home = `http://hello.fed.wiki/assets/home/index.html`
-        return text.replace(/\[\[(.*?)\]\]/g,
-          (_,title) => `<a href="${home}?site=${site}&slug=${asSlug(title)}">${title}</a>`)
+      // update the dom with new elements properly placed
+      function render(page) {
+        const asSlug = text => text.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
+        const escape = text => text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        const linked = text => text.replace(/\[\[(.*?)\]\]/g,
+            (_,title) => `<a href="${home}?site=${site}&slug=${asSlug(title)}">${title}</a>`)
+        window.result.innerHTML = page.story
+          .filter(item => item.type == 'paragraph')
+          .map(item => `<p>${linked(escape(item.text))}</p>`)
+          .join("\n")
       }
+
     </script>
   </body>
 </html>
