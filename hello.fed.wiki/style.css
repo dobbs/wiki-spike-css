@@ -1,4 +1,17 @@
-body {
-  width:420px;
-  padding:16px;
+@media min-width:452px {
+  body {
+   width: 420px;
+   padding: 16px;
+  }
+}
+
+@media max-width:452px {
+  body {
+    width: 1vw;
+    padding: 5px;
+  }
+}
+
+.panel {
+  background-color: #eee;
 }

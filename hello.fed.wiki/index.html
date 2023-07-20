@@ -5,33 +5,62 @@
     <meta name=viewport content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <div id=result>
-      <p>(Oops. Nothing here yet?)</p>
+    <div id=footer>
       <p>Try old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> site.</p>
     </div>
+    <div id=lineup></div>
     <script type=module>
 
-      const home = `http://hello.fed.wiki/assets/home/index.html`
-      const params = Object.fromEntries(new URLSearchParams(location.search).entries())
-      const site = params.site || 'hello.fed.wiki'
-      const slug = params.slug || 'welcome-visitors'
-      render(await resolve(site,slug))
+      const asSlug = text => text.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
+      const lineup = [] // {page,id}...
 
-      // retrieve page json following all the collaborative rules
+      {  // launch the app with one page, typically welcome-visitors
+        const params = Object.fromEntries(new URLSearchParams(location.search).entries())
+        const site = params.site || 'hello.fed.wiki'
+        const slug = params.slug || 'welcome-visitors'
+        render(await resolve(site,slug))
+        window.lineup.addEventListener('click',async event => {
+          if (event.target.tagName == 'A' && event.target.getAttribute('href') == '#') {
+            event.preventDefault()
+            link(event)
+          }
+        })
+      }
+
       async function resolve(site,slug) {
+        // retrieve page json following all the collaborative rules
         return await fetch(`http://${site}/${slug}.json`).then(res => res.json())
       }
 
-      // update the dom with new elements properly placed
       function render(page) {
-        const asSlug = text => text.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
+        // add a new content to the dom
         const escape = text => text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
         const linked = text => text.replace(/\[\[(.*?)\]\]/g,
-            (_,title) => `<a href="${home}?site=${site}&slug=${asSlug(title)}">${title}</a>`)
-        window.result.innerHTML = page.story
+            (_,title) => `<a href="#">${title}</a>`)
+        const id = (Math.floor(Math.random()*2**32)).toString(16)
+        const panel = {page,id}
+        lineup.push(panel)
+        const body = page.story
           .filter(item => item.type == 'paragraph')
           .map(item => `<p>${linked(escape(item.text))}</p>`)
           .join("\n")
+        window.lineup.innerHTML += `<div class=panel id=${id}>${body}</div>`
+      }
+
+      async function link(event) {
+        // handle internal link
+        const last = array => array[array.length-1]
+        if(!event.shiftKey) {
+          // make space in the lineup for new content
+          const panel = event.target.closest('.panel')
+          while(last(lineup).id != panel.id) {
+            document.getElementById(last(lineup).id).remove()
+            lineup.pop()
+          }
+        }
+        const site = 'hello.fed.wiki'
+        const slug = asSlug(event.target.innerText)
+        render(await resolve(site,slug))
       }
 
     </script>
