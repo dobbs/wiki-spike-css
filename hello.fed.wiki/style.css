@@ -12,6 +12,10 @@
   }
 }
 
+body {
+  font-family: "Helvetica Neue", Verdana, helvetica, Arial, Sans;
+}
+
 .panel {
   background-color: #eee;
 }

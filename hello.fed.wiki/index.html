@@ -35,8 +35,9 @@
       function render(page) {
         // add a new content to the dom
         const escape = text => text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
-        const linked = text => text.replace(/\[\[(.*?)\]\]/g,
-            (_,title) => `<a href="#">${title}</a>`)
+        const linked = text => text
+          .replace(/\[\[(.*?)\]\]/g, (_,title) => `<a href="#">${title}</a>`)
+          .replace(/\[(https?:\/\/.*?) (.*?)\]/g, (_,url,word) => `<a href="${url}">${word}</a>`)
         const id = (Math.floor(Math.random()*2**32)).toString(16)
         const panel = {page,id}
         lineup.push(panel)
@@ -44,7 +45,12 @@
           .filter(item => item.type == 'paragraph')
           .map(item => `<p>${linked(escape(item.text))}</p>`)
           .join("\n")
-        window.lineup.innerHTML += `<div class=panel id=${id}>${body}</div>`
+        window.lineup.innerHTML += `
+          <div class=panel id=${id}>
+            <h2>${page.title}</h2>
+            ${body}
+          </div>
+        `
       }
 
       async function link(event) {
