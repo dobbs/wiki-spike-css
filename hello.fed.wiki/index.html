@@ -15,10 +15,10 @@
       const lineup = [] // {page,id}...
 
       {  // launch the app with one page, typically welcome-visitors
-        const params = Object.fromEntries(new URLSearchParams(location.search).entries())
-        const site = params.site || 'hello.fed.wiki'
-        const slug = params.slug || 'welcome-visitors'
-        render(await resolve(site,slug))
+        const params = new URLSearchParams(location.search)
+        const site = params.get('site') || 'hello.fed.wiki'
+        const slug = params.get('slug') || 'welcome-visitors'
+        render(await resolve([site],slug))
         window.lineup.addEventListener('click',async event => {
           if (event.target.tagName == 'A' && event.target.getAttribute('href') == '#') {
             event.preventDefault()
@@ -27,27 +27,30 @@
         })
       }
 
-      async function resolve(site,slug) {
+      async function resolve(context,slug) {
         // retrieve page json following all the collaborative rules
-        return await fetch(`http://${site}/${slug}.json`).then(res => res.json())
+        const site = context.pop()
+        return await fetch(`http://${site}/${slug}.json`)
+            .then(async res => res.ok && res.status==200 ?
+              {site, page:(await res.json())} :
+              resolve(context,slug))
       }
 
-      function render(page) {
+      function render(panel) {
         // add a new content to the dom
         const escape = text => text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
         const linked = text => text
           .replace(/\[\[(.*?)\]\]/g, (_,title) => `<a href="#">${title}</a>`)
           .replace(/\[(https?:\/\/.*?) (.*?)\]/g, (_,url,word) => `<a href="${url}">${word}</a>`)
-        const id = (Math.floor(Math.random()*2**32)).toString(16)
-        const panel = {page,id}
+        panel.id = (Math.floor(Math.random()*2**32)).toString(16)
         lineup.push(panel)
-        const body = page.story
+        const body = panel.page.story
           .filter(item => item.type == 'paragraph')
           .map(item => `<p>${linked(escape(item.text))}</p>`)
           .join("\n")
         window.lineup.innerHTML += `
-          <div class=panel id=${id}>
-            <h2>${page.title}</h2>
+          <div class=panel id=${panel.id}>
+            <h2>${panel.page.title}</h2>
             ${body}
           </div>
         `
@@ -56,17 +59,22 @@
       async function link(event) {
         // handle internal link
         const last = array => array[array.length-1]
+        const uniq = (value, index, self) => self.indexOf(value) === index
+        const here = event.target.closest('.panel')
         if(!event.shiftKey) {
           // make space in the lineup for new content
-          const panel = event.target.closest('.panel')
-          while(last(lineup).id != panel.id) {
+          while(last(lineup).id != here.id) {
             document.getElementById(last(lineup).id).remove()
             lineup.pop()
           }
         }
-        const site = 'hello.fed.wiki'
+        const panel = lineup.find(panel => panel.id == here.id)
+        const more = (panel.page.journal||[]).slice().reverse()
+          .map(action => action.site)
+          .filter(site => site)
+        const context = ([panel.site, ...more]).filter(uniq)
         const slug = asSlug(event.target.innerText)
-        render(await resolve(site,slug))
+        render(await resolve(context,slug))
       }
 
     </script>
