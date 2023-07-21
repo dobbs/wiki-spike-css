@@ -12,19 +12,21 @@
     <script type=module>
 
       const asSlug = text => text.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
-      const lineup = [] // {page,id}...
 
-      {  // launch the app with one page, typically welcome-visitors
-        const params = new URLSearchParams(location.search)
-        const site = params.get('site') || 'hello.fed.wiki'
+      const lineup = [] // {page,id}...
+      const params = new URLSearchParams(location.search)
+      const origin = params.get('site') || 'hello.fed.wiki'
+
+      { // launch the app with one page, typically welcome-visitors
         const slug = params.get('slug') || 'welcome-visitors'
-        render(await resolve([site],slug))
+        render(await resolve([origin],slug))
         window.lineup.addEventListener('click',async event => {
           if (event.target.tagName == 'A' && event.target.getAttribute('href') == '#') {
             event.preventDefault()
             link(event)
           }
         })
+        window.debug = {origin,lineup}
       }
 
       async function resolve(context,slug) {
@@ -41,7 +43,7 @@
         const escape = text => text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
         const linked = text => text
           .replace(/\[\[(.*?)\]\]/g, (_,title) => `<a href="#">${title}</a>`)
-          .replace(/\[(https?:\/\/.*?) (.*?)\]/g, (_,url,word) => `<a href="${url}">${word}</a>`)
+          .replace(/\[(https?:.*?) (.*?)\]/g, (_,url,word) => `<a href="${url}">${word}</a>`)
         panel.id = (Math.floor(Math.random()*2**32)).toString(16)
         lineup.push(panel)
         const body = panel.page.story
@@ -72,7 +74,7 @@
         const more = (panel.page.journal||[]).slice().reverse()
           .map(action => action.site)
           .filter(site => site)
-        const context = ([panel.site, ...more]).filter(uniq)
+        const context = ([origin, panel.site, ...more]).filter(uniq)
         const slug = asSlug(event.target.innerText)
         render(await resolve(context,slug))
       }
