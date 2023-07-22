@@ -5,10 +5,10 @@
     <meta name=viewport content="width=device-width, initial-scale=1">
   </head>
   <body>
-    <div id=footer>
-      <p>Try old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> site.</p>
-    </div>
-    <div id=lineup></div>
+    <section class=main id=lineup></section>
+    <footer id=footer>
+      Try old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> site.
+    </footer>
     <script type=module>
 
       const asSlug = text => text.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
@@ -51,9 +51,11 @@
           .map(item => `<p>${linked(escape(item.text))}</p>`)
           .join("\n")
         window.lineup.innerHTML += `
-          <div class=panel id=${panel.id}>
-            <h2>${panel.page.title}</h2>
-            ${body}
+          <div class=page id=${panel.id}>
+            <div class=paper>
+              <h2>${panel.page.title}</h2>
+              ${body}
+            </div>
           </div>
         `
       }
@@ -62,7 +64,7 @@
         // handle internal link
         const last = array => array[array.length-1]
         const uniq = (value, index, self) => self.indexOf(value) === index
-        const here = event.target.closest('.panel')
+        const here = event.target.closest('.page')
         if(!event.shiftKey) {
           // make space in the lineup for new content
           while(last(lineup).id != here.id) {
