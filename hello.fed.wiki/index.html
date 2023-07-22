@@ -79,6 +79,9 @@
         const context = ([origin, panel.site, ...more]).filter(uniq)
         const slug = asSlug(event.target.innerText)
         render(await resolve(context,slug))
+        window.lineup
+          .querySelector('.page:last-of-type')
+          .scrollIntoView({behavior:'smooth', block:'center'})
       }
 
     </script>
