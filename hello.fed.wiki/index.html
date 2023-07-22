@@ -19,6 +19,8 @@
 
       { // launch the app with one page, typically welcome-visitors
         const slug = params.get('slug') || 'welcome-visitors'
+        const view = r => `${r.site==origin?'view':r.site}/${asSlug(r.page.title)}`
+        const legacy = () => window.open(`http://${origin}/${lineup.map(view).join('/')}`,'_blank')
         render(await resolve([origin],slug))
         window.lineup.addEventListener('click',async event => {
           if (event.target.tagName == 'A' && event.target.getAttribute('href') == '#') {
@@ -26,12 +28,12 @@
             link(event)
           }
         })
-        window.debug = {origin,lineup}
+        window.debug = {origin,lineup,legacy}
       }
 
       async function resolve(context,slug) {
         // retrieve page json following all the collaborative rules
-        const site = context.pop()
+        const site = context.shift()
         return await fetch(`http://${site}/${slug}.json`)
             .then(async res => res.ok && res.status==200 ?
               {site, page:(await res.json())} :
