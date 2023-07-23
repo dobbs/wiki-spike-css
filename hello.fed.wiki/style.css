@@ -48,3 +48,22 @@
    padding: 30px;
  }
  img.remote,.neighbor img { width: 16px; height: 16px; background-color: #ccc; }
+
+
+/* One Width. We try to match pages bit for bit on big screen, and shrink to fit on small screen. */
+
+body {
+  font-family: "Helvetica Neue", Verdana, helvetica, Arial, Sans;
+  background-color: #ebebeb;
+}
+a {
+  text-decoration: none;
+}
+.page {
+  margin: 8px;
+  box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.2);  /* normal */
+  box-shadow: 2px 1px 24px rgba(0, 0, 0, 0.4);  /* active */
+}
+.twins {
+  min-height: 1em;
+}

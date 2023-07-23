@@ -58,7 +58,15 @@
         window.lineup.innerHTML += `
           <div class=page id=${panel.id}>
             <div class=paper>
-              <h2>${panel.page.title}</h2>
+              <div class=twins></div>
+              <div class=header>
+                <h1 title=${panel.site}>
+                  <span>
+                    <img src=//${panel.site}/favicon.png height=32px>
+                    ${panel.page.title}
+                  </span>
+                </h1>
+              </div>
               ${body}
             </div>
           </div>`
