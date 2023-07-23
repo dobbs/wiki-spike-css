@@ -21,11 +21,14 @@
         const slug = params.get('slug') || 'welcome-visitors'
         const view = r => `${r.site==origin?'view':r.site}/${asSlug(r.page.title)}`
         const legacy = () => window.open(`http://${origin}/${lineup.map(view).join('/')}`,'_blank')
-        render(await resolve([origin],slug))
+        await render(await resolve([origin],slug))
         window.lineup.addEventListener('click',async event => {
-          if (event.target.tagName == 'A' && event.target.getAttribute('href') == '#') {
+          const target = event.target
+          if (target.tagName == 'A' && target.getAttribute('href') == '#') {
             event.preventDefault()
-            link(event)
+            const title = target.innerText
+            const here = target.closest('.page')
+            link(title,here,event.shiftKey)
           }
         })
         window.debug = {origin,lineup,legacy}
@@ -40,7 +43,7 @@
               resolve(context,slug))
       }
 
-      function render(panel) {
+      async function render(panel) {
         // add a new content to the dom
         const escape = text => text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
         const linked = text => text
@@ -58,16 +61,15 @@
               <h2>${panel.page.title}</h2>
               ${body}
             </div>
-          </div>
-        `
+          </div>`
+        await test(panel,window.lineup.querySelector('.page:last-of-type'))
       }
 
-      async function link(event) {
+      async function link(title,here,shiftKey) {
         // handle internal link
         const last = array => array[array.length-1]
         const uniq = (value, index, self) => self.indexOf(value) === index
-        const here = event.target.closest('.page')
-        if(!event.shiftKey) {
+        if(!shiftKey) {
           // make space in the lineup for new content
           while(last(lineup).id != here.id) {
             document.getElementById(last(lineup).id).remove()
@@ -79,11 +81,21 @@
           .map(action => action.site)
           .filter(site => site)
         const context = ([origin, panel.site, ...more]).filter(uniq)
-        const slug = asSlug(event.target.innerText)
-        render(await resolve(context,slug))
+        const slug = asSlug(title)
+        await render(await resolve(context,slug))
         window.lineup
           .querySelector('.page:last-of-type')
           .scrollIntoView({behavior:'smooth', block:'center'})
+      }
+
+      async function test(panel,page) {
+        const pragmas = panel.page.story
+          .filter(item => item.type == 'paragraph' && item.text.startsWith('► '))
+        for (const item of pragmas) {
+          console.log(item.text)
+          const m = item.text.match(/^► run \[\[(.*?)\]\]/)
+          if(m){await link(m[1],page,false)}
+        }
       }
 
     </script>
