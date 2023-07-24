@@ -99,13 +99,21 @@
 
       async function test(panel,page) {
         await delay(200)
+        const ok = b => {
+          console.log(b?'%cpass':'%cfail',b?'color:green':'color:red')
+          if(!b) debugger}
         const pragmas = panel.page.story
           .filter(item => item.type == 'paragraph' && item.text.startsWith('► '))
         for (const item of pragmas) {
+          let m
           console.log(item.text)
-          const m = item.text.match(/^► click \[\[(.*?)\]\]/)
-          if(m){await link(m[1],page,false)}
-          await delay(2000)
+          if(m = item.text.match(/click \[\[(.+?)\]\]/))
+            {await link(m[1],page,false)}
+          if(m = item.text.match(/check site ([\w\.-]+)/))
+            {ok(lineup[lineup.length-1].site.includes(m[1]))}
+          if(m = item.text.match(/check slug ([a-z-]+)/))
+            {ok(asSlug(lineup[lineup.length-1].page.title).includes(m[1]))}
+          await delay(200)
         }
       }
 
