@@ -1,5 +1,5 @@
 /* import the rules that replace inline style */
-@import url(/inline.css);
+@import url(inline.css);
 
 * { box-sizing: border-box; }
 body {
