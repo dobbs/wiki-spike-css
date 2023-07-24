@@ -29,7 +29,7 @@
           if (target.tagName == 'A' && target.getAttribute('href') == '#') {
             event.preventDefault()
             const title = target.innerText
-            const here = target.closest('.page')
+            const here = target.closest('.page').id
             link(title,here,event.shiftKey)
           }
         })
@@ -72,7 +72,7 @@
               ${body}
             </div>
           </div>`
-        await test(panel,window.lineup.querySelector('.page:last-of-type'))
+        await test(panel)
       }
 
       async function link(title,here,shiftKey) {
@@ -81,12 +81,12 @@
         const uniq = (value, index, self) => self.indexOf(value) === index
         if(!shiftKey) {
           // make space in the lineup for new content
-          while(last(lineup).id != here.id) {
+          while(last(lineup).id != here) {
             document.getElementById(last(lineup).id).remove()
             lineup.pop()
           }
         }
-        const panel = lineup.find(panel => panel.id == here.id)
+        const panel = lineup.find(panel => panel.id == here)
         const more = (panel.page.journal||[]).slice().reverse()
           .map(action => action.site)
           .filter(site => site)
@@ -98,7 +98,7 @@
           .scrollIntoView({behavior:'smooth', block:'center'})
       }
 
-      async function test(panel,page) {
+      async function test(panel) {
         await delay(200)
         const pragmas = panel.page.story
           .filter(item => item.type == 'paragraph' && item.text.startsWith('► '))
@@ -111,7 +111,7 @@
           let m
           console.log(item.text)
           if(m = item.text.match(/click \[\[(.+?)\]\]/))
-            {await link(m[1],page,false)}
+            {await link(m[1],panel.id,false)}
           if(m = item.text.match(/check site ([\w\.-]+)/))
             {ok(lineup[lineup.length-1].site.includes(m[1]))}
           if(m = item.text.match(/check slug ([a-z-]+)/))
