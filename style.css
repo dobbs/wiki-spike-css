@@ -2,13 +2,14 @@
 @import url(inline.css);
 
 * { box-sizing: border-box; }
+
 body {
   cursor: auto; /* was inline */
   margin: 0;
   padding: 0px;
-  height: 100vh;
-  width: 100vw;
-  overflow-x: scroll;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
   overflow-y: hidden;
   --footer-height: 2rem;
   --main-height: calc(100vh - var(--footer-height) - 10px);
@@ -21,10 +22,20 @@ body {
     "main"
     "footer";
 }
+
 .main {
   grid-area: main;
   height: var(--main-height);
+  display: grid;
+  grid: auto / auto-flow max-content;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
+.main::-webkit-scrollbar {
+  display: none;
+}
+
 footer {
   grid-area: footer;
   justify-self: start;
@@ -47,6 +58,7 @@ footer .neighborhood {
   overflow-y: scroll;
   margin: 5px;
   background-color: white;
+  scroll-snap-align: center;
 }
 .paper {
   padding: 30px;
