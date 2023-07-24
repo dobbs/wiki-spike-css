@@ -68,6 +68,8 @@ a {
   min-height: 1em;
 }
 
+/* Self Test. We add these check-marks as check pragmas complete. */
+
 .pass::after {
   font-weight: bold;
   color: green;
@@ -78,4 +80,28 @@ a {
   font-weight: bold;
   color: red;
   content: " \2715";
+}
+
+/* Direct Manipulation. We add scroll-snap to improve the feel of touch scrolling.  */
+
+.body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.page {
+  scroll-snap-align: center;
+}
+
+.main {
+  display: grid;
+  grid: auto / auto-flow max-content;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.main::-webkit-scrollbar {
+  display: none;
 }
