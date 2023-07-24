@@ -67,3 +67,15 @@ a {
 .twins {
   min-height: 1em;
 }
+
+.pass::after {
+  font-weight: bold;
+  color: green;
+  content: " \2713";
+}
+
+.fail::after {
+  font-weight: bold;
+  color: red;
+  content: " \2715";
+}

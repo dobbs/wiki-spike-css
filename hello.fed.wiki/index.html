@@ -8,6 +8,7 @@
     <section class=main id=lineup></section>
     <footer id=footer>
       Try old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> site.
+      Completed checks show <span class=pass>pass</span> or <span class=fail>fail</span>
     </footer>
     <script type=module>
 
@@ -54,7 +55,7 @@
         lineup.push(panel)
         const body = panel.page.story
           .filter(item => item.type == 'paragraph')
-          .map(item => `<p>${linked(escape(item.text))}</p>`)
+          .map(item => `<p id="${item.id}">${linked(escape(item.text))}</p>`)
           .join("\n")
         window.lineup.innerHTML += `
           <div class=page id=${panel.id}>
@@ -99,12 +100,14 @@
 
       async function test(panel,page) {
         await delay(200)
-        const ok = b => {
-          console.log(b?'%cpass':'%cfail',b?'color:green':'color:red')
-          if(!b) debugger}
         const pragmas = panel.page.story
           .filter(item => item.type == 'paragraph' && item.text.startsWith('► '))
         for (const item of pragmas) {
+          const ok = bool => {
+            console.log(bool?'%cpass':'%cfail',bool?'color:green':'color:red')
+            document.getElementById(item.id).classList.add(bool?'pass':'fail')
+            if(!bool) debugger
+          }
           let m
           console.log(item.text)
           if(m = item.text.match(/click \[\[(.+?)\]\]/))
@@ -113,7 +116,6 @@
             {ok(lineup[lineup.length-1].site.includes(m[1]))}
           if(m = item.text.match(/check slug ([a-z-]+)/))
             {ok(asSlug(lineup[lineup.length-1].page.title).includes(m[1]))}
-          await delay(200)
         }
       }
 
