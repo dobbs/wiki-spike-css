@@ -33,6 +33,8 @@ __Flags.__ Sites in the federation are identified by consistently generated imag
 
 __Direct Manipulation.__ Some items expose temporary adjustments such as hover, drill-down, pan and zoom. E.g. Map, Assets, Frame, others?
 
+__Self Test.__ New. Core releases, plugins and possibly scripts can provide "self driving" pragmas that visibly succeed or fail.
+
 ## Authoring
 
 __Natural Extension.__ The act of reading extends easily into writing in an unchanged context.
