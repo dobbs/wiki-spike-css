@@ -1,5 +1,9 @@
+/* import the rules that replace inline style */
+@import url(/inline.css);
+
 * { box-sizing: border-box; }
 body {
+  cursor: auto; /* was inline */
   margin: 0;
   padding: 0px;
   height: 100vh;
