@@ -14,24 +14,24 @@ body {
 
 /* expandable left navigation */
 body {
-  white-space: nowrap;
+  overflow-x: hidden;
 }
-main, body > details {
-  display: inline-block;
-  vertical-align: top;
-  height: 100vh;
-  white-space: normal;
+main > details {
+  position: sticky;
+  left: 0;
+  background-color: #9d9d9d;
+  padding: var(--gutter);
 }
-body > details[open] {
+main > details[open] {
   width: var(--onewidth);
 }
 
 /* Direct Manipulation. We add scroll-snap to improve the feel of touch scrolling.  */
 /* lineup scrolls horizontally and snaps to pages */
 main {
+  display: grid;
+  grid: auto / auto-flow max-content;
   overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
@@ -59,9 +59,6 @@ body {
 }
 h1, h2, h3 {
   font-size: 18pt;
-}
-body > details {
-  padding: var(--gutter);
 }
 .page {
   background-color: white;
