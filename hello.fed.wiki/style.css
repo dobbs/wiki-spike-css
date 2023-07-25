@@ -30,6 +30,7 @@ body > details[open] {
   width: var(--onewidth);
 }
 
+/* Direct Manipulation. We add scroll-snap to improve the feel of touch scrolling.  */
 /* lineup scrolls horizontally and snaps to pages */
 main {
   overflow-x: scroll;
@@ -57,8 +58,11 @@ main::-webkit-scrollbar {
 
 /* page typeface, color, and white space */
 body {
+  font-family: "Helvetica Neue", Verdana, helvetica, Arial, Sans;
+  background-color: #ebebeb;
+}
+main, body > details {
   padding: var(--gutter);
-  background-color: lightgrey;
 }
 .page {
   background-color: white;
@@ -68,4 +72,21 @@ body {
 }
 .paper {
   padding: 30px;
+}
+/* flag sizes */
+.twins {
+  min-height: 1em;
+}
+img.remote,.neighbor img { width: 16px; height: 16px; background-color: #ccc; }
+
+/* Self Test. We add these check-marks as check pragmas complete. */
+.pass::after {
+  font-weight: bold;
+  color: green;
+  content: " \2713";
+}
+.fail::after {
+  font-weight: bold;
+  color: red;
+  content: " \2715"
 }
