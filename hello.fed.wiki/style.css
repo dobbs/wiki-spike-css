@@ -1,107 +1,71 @@
- * { box-sizing: border-box; }
- body {
-   margin: 0;
-   padding: 0px;
-   height: 100vh;
-   width: 100vw;
-   overflow-x: scroll;
-   overflow-y: hidden;
-   --footer-height: 2rem;
-   --main-height: calc(100vh - var(--footer-height) - 10px);
-   background-color: lightgrey;
-   white-space: nowrap;
-   display: grid;
-   grid-template-columns: 1fr;
-   grid-template-rows: 1fr var(--footer-height);
-   grid-template-areas:
-     "main"
-     "footer";
- }
- .main {
-   grid-area: main;
-   height: var(--main-height);
- }
- footer {
-   grid-area: footer;
-   justify-self: start;
-   align-self: end;
-   padding: 5px;
-   height: var(--footer-height);
-   width: 100%;
- }
- footer * {
-   display: inline-block;
- }
- footer .neighborhood {
-   float: right;
- }
- .page {
-   display: inline-block;
-   white-space: normal;
-   width: 490px;
-   height: var(--main-height);
-   overflow-y: scroll;
-   margin: 5px;
-   background-color: white;
- }
- .paper {
-   padding: 30px;
- }
- img.remote,.neighbor img { width: 16px; height: 16px; background-color: #ccc; }
-
-
-/* One Width. We try to match pages bit for bit on big screen, and shrink to fit on small screen. */
+/* reset */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
 
 body {
-  font-family: "Helvetica Neue", Verdana, helvetica, Arial, Sans;
-  background-color: #ebebeb;
-}
-a {
-  text-decoration: none;
-}
-.page {
-  margin: 8px;
-  box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.2);  /* normal */
-  box-shadow: 2px 1px 24px rgba(0, 0, 0, 0.4);  /* active */
-}
-.twins {
-  min-height: 1em;
+  --onewidth: 490px;
+  --gutter: 8px;
 }
 
-/* Self Test. We add these check-marks as check pragmas complete. */
-
-.pass::after {
-  font-weight: bold;
-  color: green;
-  content: " \2713";
-}
-
-.fail::after {
-  font-weight: bold;
-  color: red;
-  content: " \2715";
-}
-
-/* Direct Manipulation. We add scroll-snap to improve the feel of touch scrolling.  */
-
-.body {
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-.page {
-  scroll-snap-align: center;
-}
-
-.main {
-  display: grid;
-  grid: auto / auto-flow max-content;
+/* expandable left navigation */
+body {
+  white-space: nowrap;
   overflow-x: scroll;
+  overflow-y: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+main, body > details {
+  display: inline-block;
+  vertical-align: top;
+  height: 100vh;
+  white-space: normal;
+}
+body > details[open] {
+  width: var(--onewidth);
+}
+
+/* lineup scrolls horizontally and snaps to pages */
+main {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
-
-.main::-webkit-scrollbar {
+main > .page {
+  display: inline-block;
+  scroll-snap-align: center;
+}
+main::-webkit-scrollbar {
   display: none;
+}
+
+/* One width. Pages scroll vertically */
+.page {
+  width: var(--onewidth);
+  height: calc(100vh - 2*var(--gutter));
+  white-space: normal;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+/* page typeface, color, and white space */
+body {
+  padding: var(--gutter);
+  background-color: lightgrey;
+}
+.page {
+  background-color: white;
+  margin: 0 var(--gutter);
+  box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.2);  /* normal */
+  box-shadow: 2px 1px 24px rgba(0, 0, 0, 0.4);  /* active */
+}
+.paper {
+  padding: 30px;
 }

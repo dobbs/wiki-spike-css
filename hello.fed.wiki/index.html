@@ -6,11 +6,19 @@
     <meta name=viewport content="width=device-width, height=device-height, initial-scale=1">
   </head>
   <body>
-    <section class=main id=lineup></section>
-    <footer id=footer>
+    <details>
+      <summary>
+        <div>?</div>
+        <div>👤</div>
+        <div>☰</div>
+      </summary>
+      <nav>
       Try old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> site.
       Completed checks show <span class=pass>pass</span> or <span class=fail>fail</span>
-    </footer>
+      </nav>
+    </details>
+    <main id=lineup>
+    </main>
     <script type=module>
 
       const asSlug = text => text.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
