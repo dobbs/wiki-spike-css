@@ -47,6 +47,7 @@ main::-webkit-scrollbar {
 .page {
   width: var(--onewidth);
   height: calc(100vh - 2*var(--gutter));
+  margin: var(--gutter);
   white-space: normal;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -62,7 +63,6 @@ h1, h2, h3 {
 }
 .page {
   background-color: white;
-  margin: var(--gutter);
   box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.2);  /* normal */
   /* box-shadow: 2px 1px 24px rgba(0, 0, 0, 0.4); */  /* active */
 }
