@@ -48,7 +48,7 @@
       async function resolve(context,slug) {
         // retrieve page json following all the collaborative rules
         const site = context.shift()
-        return await fetch(`http://${site}/${slug}.json`)
+        return await fetch(`//${site}/${slug}.json`)
             .then(async res => res.ok && res.status==200 ?
               {site, page:(await res.json())} :
               resolve(context,slug))
