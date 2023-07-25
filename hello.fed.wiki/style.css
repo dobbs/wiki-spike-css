@@ -60,14 +60,14 @@ body {
 h1, h2, h3 {
   font-size: 18pt;
 }
-main, body > details {
+body > details {
   padding: var(--gutter);
 }
 .page {
   background-color: white;
-  margin: 0 var(--gutter);
+  margin: var(--gutter);
   box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.2);  /* normal */
-  box-shadow: 2px 1px 24px rgba(0, 0, 0, 0.4);  /* active */
+  /* box-shadow: 2px 1px 24px rgba(0, 0, 0, 0.4); */  /* active */
 }
 .paper {
   padding: 30px;
