@@ -84,14 +84,10 @@ a {
 
 /* Direct Manipulation. We add scroll-snap to improve the feel of touch scrolling.  */
 
-.body {
+body {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
-}
-
-.page {
-  scroll-snap-align: center;
 }
 
 .main {
@@ -104,4 +100,8 @@ a {
 
 .main::-webkit-scrollbar {
   display: none;
+}
+
+.page {
+  scroll-snap-align: center;
 }
