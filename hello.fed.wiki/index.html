@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <link href="style.css" rel="stylesheet">
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <section class=main id=lineup></section>
+    <footer id=footer>
+      Try old <a href="http://hello.fed.wiki/view/welcome-visitors">Welcome Visitors</a> site.
+      Completed checks show <span class=pass>pass</span> or <span class=fail>fail</span>
+    </footer>
+    <script type=module>
+
+      const asSlug = text => text.replace(/\s/g, '-').replace(/[^A-Za-z0-9-]/g, '').toLowerCase()
+      const delay = time => new Promise(res => setTimeout(res,time))
+
+      const lineup = [] // {page,id}...
+      const params = new URLSearchParams(location.search)
+      const origin = params.get('site') || 'hello.fed.wiki'
+
+      { // launch the app with one page, typically welcome-visitors
+        const slug = params.get('slug') || 'welcome-visitors'
+        const view = r => `${r.site==origin?'view':r.site}/${asSlug(r.page.title)}`
+        const legacy = () => window.open(`http://${origin}/${lineup.map(view).join('/')}`,'_blank')
+        await render(await resolve([origin],slug))
+        window.lineup.addEventListener('click',async event => {
+          const target = event.target
+          if (target.tagName == 'A' && target.getAttribute('href') == '#') {
+            event.preventDefault()
+            const title = target.innerText
+            const here = target.closest('.page').id
+            link(title,here,event.shiftKey)
+          }
+        })
+        window.debug = {origin,lineup,legacy}
+      }
+
+      async function resolve(context,slug) {
+        // retrieve page json following all the collaborative rules
+        const site = context.shift()
+        return await fetch(`http://${site}/${slug}.json`)
+            .then(async res => res.ok && res.status==200 ?
+              {site, page:(await res.json())} :
+              resolve(context,slug))
+      }
+
+      async function render(panel) {
+        // add a new content to the dom
+        const escape = text => text.replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        const linked = text => text
+          .replace(/\[\[(.*?)\]\]/g, (_,title) => `<a href="#">${title}</a>`)
+          .replace(/\[(https?:.*?) (.*?)\]/g, (_,url,word) => `<a href="${url}">${word}</a>`)
+        panel.id = (Math.floor(Math.random()*2**32)).toString(16)
+        lineup.push(panel)
+        const body = panel.page.story
+          .filter(item => item.type == 'paragraph')
+          .map(item => `<p id="${item.id}">${linked(escape(item.text))}</p>`)
+          .join("\n")
+        window.lineup.innerHTML += `
+          <div class=page id=${panel.id}>
+            <div class=paper>
+              <div class=twins></div>
+              <div class=header>
+                <h1 title=${panel.site}>
+                  <span>
+                    <img src=//${panel.site}/favicon.png height=32px>
+                    ${panel.page.title}
+                  </span>
+                </h1>
+              </div>
+              ${body}
+            </div>
+          </div>`
+        await test(panel)
+      }
+
+      async function link(title,here,shiftKey) {
+        // handle internal link
+        const last = array => array[array.length-1]
+        const uniq = (value, index, self) => self.indexOf(value) === index
+        if(!shiftKey) {
+          // make space in the lineup for new content
+          while(last(lineup).id != here) {
+            document.getElementById(last(lineup).id).remove()
+            lineup.pop()
+          }
+        }
+        const panel = lineup.find(panel => panel.id == here)
+        const more = (panel.page.journal||[]).slice().reverse()
+          .map(action => action.site)
+          .filter(site => site)
+        const context = ([origin, panel.site, ...more]).filter(uniq)
+        const slug = asSlug(title)
+        await render(await resolve(context,slug))
+        window.lineup
+          .querySelector('.page:last-of-type')
+          .scrollIntoView({behavior:'smooth', block:'center'})
+      }
+
+      async function test(panel) {
+        await delay(200)
+        const pragmas = panel.page.story
+          .filter(item => item.type == 'paragraph' && item.text.startsWith('► '))
+        for (const item of pragmas) {
+          const ok = bool => {
+            console.log(bool?'%cpass':'%cfail',bool?'color:green':'color:red')
+            document.getElementById(item.id).classList.add(bool?'pass':'fail')
+            if(!bool) debugger
+          }
+          let m
+          console.log(item.text)
+          if(m = item.text.match(/click \[\[(.+?)\]\]/))
+            {await link(m[1],panel.id,false)}
+          if(m = item.text.match(/check site ([\w\.-]+)/))
+            {ok(lineup[lineup.length-1].site.includes(m[1]))}
+          if(m = item.text.match(/check slug ([a-z-]+)/))
+            {ok(asSlug(lineup[lineup.length-1].page.title).includes(m[1]))}
+        }
+      }
+
+    </script>
+  </body>
+</html>
