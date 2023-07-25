@@ -1,0 +1,54 @@
+/* import the rules that replace inline style */
+@import url(inline.css);
+
+* { box-sizing: border-box; }
+body {
+  cursor: auto; /* was inline */
+  margin: 0;
+  padding: 0px;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  --footer-height: 2rem;
+  --main-height: calc(100vh - var(--footer-height) - 10px);
+  background-color: lightgrey;
+  white-space: nowrap;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr var(--footer-height);
+  grid-template-areas:
+    "main"
+    "footer";
+}
+.main {
+  grid-area: main;
+  height: var(--main-height);
+}
+footer {
+  grid-area: footer;
+  justify-self: start;
+  align-self: end;
+  padding: 5px;
+  height: var(--footer-height);
+  width: 100%;
+}
+footer * {
+  display: inline-block;
+}
+footer .neighborhood {
+  float: right;
+}
+.page {
+  display: inline-block;
+  white-space: normal;
+  width: 490px;
+  height: var(--main-height);
+  overflow-y: scroll;
+  margin: 5px;
+  background-color: white;
+}
+.paper {
+  padding: 30px;
+}
+img.remote,.neighbor img { width: 16px; height: 16px; background-color: #ccc; }

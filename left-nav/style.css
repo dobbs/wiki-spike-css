@@ -1,0 +1,89 @@
+/* reset */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  --onewidth: 490px;
+  --gutter: 8px;
+}
+
+/* expandable left navigation */
+body {
+  overflow-x: hidden;
+}
+main > details {
+  position: sticky;
+  left: 0;
+  background-color: #9d9d9d;
+  padding: var(--gutter);
+}
+main > details[open] {
+  width: var(--onewidth);
+}
+
+/* Direct Manipulation. We add scroll-snap to improve the feel of touch scrolling.  */
+/* lineup scrolls horizontally and snaps to pages */
+main {
+  display: grid;
+  grid: auto / auto-flow max-content;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+main > .page {
+  display: inline-block;
+  scroll-snap-align: center;
+}
+main::-webkit-scrollbar {
+  display: none;
+}
+
+/* One width. Pages scroll vertically */
+.page {
+  width: var(--onewidth);
+  height: calc(100vh - 2*var(--gutter));
+  margin: var(--gutter);
+  white-space: normal;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+/* page typeface, color, and white space */
+body {
+  font-family: "Helvetica Neue", Verdana, helvetica, Arial, Sans;
+  background-color: #ebebeb;
+}
+h1, h2, h3 {
+  font-size: 18pt;
+}
+.page {
+  background-color: white;
+  box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.2);  /* normal */
+  /* box-shadow: 2px 1px 24px rgba(0, 0, 0, 0.4); */  /* active */
+}
+.paper {
+  padding: 30px;
+}
+/* flag sizes */
+.twins {
+  min-height: 1em;
+}
+img.remote,.neighbor img { width: 16px; height: 16px; background-color: #ccc; }
+.header img { margin-bottom: -6px; }
+
+/* Self Test. We add these check-marks as check pragmas complete. */
+.pass::after {
+  font-weight: bold;
+  color: green;
+  content: " \2713";
+}
+.fail::after {
+  font-weight: bold;
+  color: red;
+  content: " \2715"
+}
