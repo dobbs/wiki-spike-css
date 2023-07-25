@@ -57,6 +57,9 @@ body {
   font-family: "Helvetica Neue", Verdana, helvetica, Arial, Sans;
   background-color: #ebebeb;
 }
+h1, h2, h3 {
+  font-size: 18pt;
+}
 main, body > details {
   padding: var(--gutter);
 }
@@ -74,6 +77,7 @@ main, body > details {
   min-height: 1em;
 }
 img.remote,.neighbor img { width: 16px; height: 16px; background-color: #ccc; }
+.header img { margin-bottom: -6px; }
 
 /* Self Test. We add these check-marks as check pragmas complete. */
 .pass::after {
