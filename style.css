@@ -7,8 +7,8 @@ body {
   cursor: auto; /* was inline */
   margin: 0;
   padding: 0px;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   overflow-x: hidden;
   overflow-y: hidden;
   --footer-height: 2rem;
@@ -60,6 +60,14 @@ footer .neighborhood {
   background-color: white;
   scroll-snap-align: center;
 }
+
+@media (max-width: 500px) {
+  .page {
+    --page-width: calc(100vw - 10px);
+    width: var(--page-width);
+  }
+}
+
 .paper {
   padding: 30px;
 }

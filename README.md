@@ -10,4 +10,6 @@ anticipate playing with javascript to remove the dependency on old jQuery UI.
 * created as little CSS as possible to try to re-create the wiki lineup.
 * I also replaced the youtube iframe with a screenshot.
 
-https://dobbs.github.io/wiki-spike-css/lineup.html
+A branch off of https://github.com/dobbs/wiki-spike-css looking at scroll snap, and page resize based on device.
+
+https://paul90.github.io/wiki-spike-css/lineup.html
