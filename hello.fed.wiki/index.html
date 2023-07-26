@@ -110,8 +110,10 @@
           }
           let m
           console.log(item.text)
+          if(lineup.length > 10)
+            {ok(false); break}
           if(m = item.text.match(/click \[\[(.+?)\]\]/))
-            {await link(m[1],panel.id,false)}
+            {await link(m[1],panel.id,false); await delay(400)}
           if(m = item.text.match(/check site ([\w\.-]+)/))
             {ok(lineup[lineup.length-1].site.includes(m[1]))}
           if(m = item.text.match(/check slug ([a-z-]+)/))
