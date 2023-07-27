@@ -33,9 +33,9 @@
             link(title,here,event.shiftKey)
           }
         })
-        window.addEventListener("dragstart", (event) => event.preventDefault())
-        window.addEventListener("dragover", (event) => event.preventDefault())
-        window.addEventListener("drop", (event) => {
+        window.addEventListener("dragstart", event => event.preventDefault())
+        window.addEventListener("dragover", event => event.preventDefault())
+        window.addEventListener("drop", event => {
           event.preventDefault()
           drop(event.dataTransfer.getData("url"))})
         window.debug = {origin,lineup,legacy}
