@@ -98,6 +98,16 @@
           .scrollIntoView({behavior:'smooth', block:'center'})
       }
 
+      async function drop(url) {
+        // handle drag and drop from remote page flag
+        const m = url.match(/^(https?:)?\/\/(.+?)\/.*\/([a-z-]+)$/)
+        if (!m) return
+        await render(await resolve([m[2]],m[3]))
+        window.lineup
+          .querySelector('.page:last-of-type')
+          .scrollIntoView({behavior:'smooth', block:'center'})
+      }
+
       async function test(panel) {
         await delay(200)
         const pragmas = panel.page.story
@@ -114,6 +124,8 @@
             {ok(false); break}
           if(m = item.text.match(/click \[\[(.+?)\]\]/))
             {await link(m[1],panel.id,false); await delay(400)}
+          if(m = item.text.match(/drop ([^ ]+)/))
+            {await drop(m[1]); await delay(400)}
           if(m = item.text.match(/check site ([\w\.-]+)/))
             {ok(lineup[lineup.length-1].site.includes(m[1]))}
           if(m = item.text.match(/check slug ([a-z-]+)/))
