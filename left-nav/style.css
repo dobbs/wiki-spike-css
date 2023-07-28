@@ -14,6 +14,45 @@ body {
 
 /* expandable left navigation */
 body {
+  overflow: hidden;
+}
+#menu-toggle {
+  position: absolute;
+  opacity: 0;
+}
+#menu-icon {
+  left: var(--gutter);
+  width: 50px;
+  height: 50px;
+  font-size: 50px;
+  display: block;
+  position: fixed;
+  z-index: 1;
+}
+#menu-content {
+  position: fixed;
+  top: 0;
+  left: calc(-1*var(--onewidth));
+  width: var(--onewidth);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--gutter);
+  padding-top: calc(var(--gutter) + 50px);
+}
+main {
+  margin-left: 0px;
+}
+#menu-toggle:checked ~ #menu-content {
+  height: 100vh;
+  width: calc(100% - var(--onewidth));
+}
+#menu-toggle:checked ~ #menu-icon {left: calc(var(--onewidth)+var(--gutter));}
+#menu-toggle:checked ~ #menu-content {left: 0px;}
+#menu-toggle:checked ~ main {margin-left: var(--onewidth);}
+
+/*
+body {
   overflow-x: hidden;
 }
 main > details {
@@ -25,6 +64,7 @@ main > details {
 main > details[open] {
   width: var(--onewidth);
 }
+*/
 
 /* Direct Manipulation. We add scroll-snap to improve the feel of touch scrolling.  */
 /* lineup scrolls horizontally and snaps to pages */
