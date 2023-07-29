@@ -35,6 +35,8 @@ __Direct Manipulation.__ Some items expose temporary adjustments such as hover, 
 
 __Self Test.__ New. Core releases, plugins and possibly scripts can provide "self driving" pragmas that visibly succeed or fail.
 
+__Partial Content.__ Show, for example, a guess of page title while fetching the page json with the properly capitalized title.
+
 ## Authoring
 
 __Natural Extension.__ The act of reading extends easily into writing in an unchanged context.
