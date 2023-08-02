@@ -17,3 +17,7 @@ anticipate playing with javascript to remove the dependency on old jQuery UI.
 [http://css-spikes.dbbs.co/hello.fed.wiki/](http://css-spikes.dbbs.co/hello.fed.wiki/)
 
 [http://css-spikes.dbbs.co/left-nav/](http://css-spikes.dbbs.co/left-nav/)
+
+[http://css-spikes.dbbs.co/observablehq/](http://css-spikes.dbbs.co/observablehq/)
+
+[http://css-spikes.dbbs.co/automerge/](http://css-spikes.dbbs.co/automerge/)
