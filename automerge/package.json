@@ -13,6 +13,7 @@
     "vite-plugin-wasm": "^3.2.2"
   },
   "dependencies": {
-    "@automerge/automerge": "^2.0.3"
+    "@automerge/automerge": "^2.0.3",
+    "localforage": "^1.10.0"
   }
 }

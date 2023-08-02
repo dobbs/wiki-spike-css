@@ -10,7 +10,13 @@ self.addEventListener("install", (e) => {
     // Give the cache a name
     caches.open("automerge-progressive-webapp").then((cache) => {
       // Cache the homepage and stylesheets - add any assets you want to cache!
-      return cache.addAll(["./", "./style.css", "./index.js", "./app.js"]);
+      return cache.addAll([
+        "./",
+        "./style.css",
+        "./index.js",
+        "./app.js",
+        "./automerge-count.js"
+      ]);
     })
   );
 });
