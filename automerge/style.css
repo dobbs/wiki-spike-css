@@ -1,3 +1,297 @@
+/******************************************************************************
+START Page structure and element resets
+******************************************************************************/
+
+/* A set of default style */
+:root {
+  /* Generic sizing for the page */
+  --wrapper-height: 75vh;
+  --avatar-max-width: 140px;
+
+  /* Fonts for different elements */
+  --font-family: sans-serif;
+  --font-family-header: sans-serif;
+  --font-family-list: monospace;
+
+  /* Colors you'll see cascade through the elements */
+
+  /* To set your own use custom-theme.css with `custom-theme` in settings.json `theme` property */
+  --color-bg: #99daff; /* Used for the page body background */
+  --color-bg-alt: #ffffff; /* Used for social icons on hover */
+  --color-text-main: #000000; /* List text ann social icons on hover */
+  --color-primary: #ffffff; /* Headers and borders */
+  --color-forms: #ff00bc; /* Form borders and highlights */
+  --color-forms-focus: #ff9028; /* Form borders and highlights */
+  --color-buttons: #ffbfee; /* Button colors */
+}
+
+/* Basic page style resets */
+* {
+  box-sizing: border-box;
+  font-size: 16px; /* Not setting this makes iOS zooooooom too much! */
+}
+[hidden] {
+  display: none !important;
+}
+
+/* Page structure */
 body {
-  font-family: sans-serif;
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  text-align: center;
+  margin: 0;
+}
+.wrapper {
+  min-height: var(--wrapper-height);
+  place-items: center;
+  margin: 3rem 2rem 0;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+/* The footer and our remix on glitch button */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem auto 0;
+  padding: 1rem 0 0.75rem 0;
+  width: 100%;
+  flex-wrap: wrap;
+  border-top: 4px solid #fff;
+}
+.footer a:hover,
+.footer a:focus {
+  background: var(--color-primary);
+}
+.footer .tagline {
+  padding: 0.25rem 1rem 1rem;
+  font-size: clamp(1rem, 0.925rem + 0.3333vw, 1.1rem);
+  text-align: left;
+  white-space: nowrap;
+  flex-grow: 8;
+}
+.btn--remix {
+  font-family: Menlo, Consolas, Monaco, "Lucida Console", monospace;
+  padding: 0.8rem 1.75rem;
+  /*font sizes scaled by viewport https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/*/
+  font-size: clamp(0.9rem, 0.825rem + 0.3333vw, 1rem);
+  line-height: 1rem;
+  font-weight: 500;
+  height: 3rem;
+  align-items: center;
+  cursor: pointer;
+  background: #ffffff;
+  border: 2px solid #000000;
+  box-sizing: border-box;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #000000;
+  white-space: nowrap;
+  margin: 6px 1rem 1.5rem 1rem;
+  flex-grow: 1;
+}
+.btn--remix img {
+  position: relative;
+  top: 1px;
+  margin-right: 0.25rem;
+}
+.btn--remix:hover,
+.btn--remix:focus {
+  background-color: #d0fff1;
+}
+
+/* Typography */
+p {
+  margin: 0 0 1rem 0;
+  line-height: 1.5 !important;
+  font-size: clamp(1rem, 0.25rem + 2.5vw, 1.5rem);
+  font-weight: 200;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 2rem 0 0.8rem;
+  font-family: var(--font-family-header);
+  font-weight: bold;
+  line-height: 1.1;
+  color: var(--color-text-main);
+}
+h1 {
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+  font-size: clamp(3rem, -0.875rem + 8.333vw, 4rem);
+  display: inline-flex;
+  color: var(--color-primary);
+  justify-content: center;
+}
+ul > li,
+ol > li {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  font-size: clamp(1rem, 0.625rem + 1.6667vw, 1.5rem);
+}
+ul {
+  padding: 0 0 0 18px;
+  margin: 0;
+}
+
+/* Link styles */
+.wrapper a:not(.btn--remix):link,
+.wrapper a:not(.btn--remix):visited {
+  text-decoration: none;
+  border-bottom: 4px solid var(--color-primary);
+  color: var(--color-text-main);
+  transition: background 0.2s linear;
+}
+.wrapper a:hover,
+.wrapper a:active,
+.wrapper a:focus {
+  background: var(--color-primary);
+}
+/******************************************************************************
+END Page structure and element resets
+******************************************************************************/
+
+/******************************************************************************
+START Hello PWA styles
+
+You can create your own CSS file in public/styles.css
+******************************************************************************/
+
+textarea,
+input,
+button {
+  margin-top: 0.5rem;
+  display: block;
+  height: 40px;
+  width: 100%;
+  border: 2px solid var(--color-forms);
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid var(--color-forms-focus);
+}
+
+button {
+  background: var(--color-buttons);
+  color: #000000;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+button:focus {
+  outline: none;
+  color: #ffffff;
+  border: 2px solid var(--color-forms-focus);
+}
+button:hover {
+  background: var(--color-forms);
+  color: #ffffff;
+  cursor: pointer;
+}
+textarea {
+  height: 125px;
+}
+
+h1,
+h2,
+p {
+  display: block;
+  text-align: left;
+}
+
+#button-notifications,
+#form-notification,
+#badging-area,
+#install-nudge .show-for-portrait,
+.show-for-landscape {
+  margin-bottom: 1rem;
+  display: none;
+}
+
+#badging-area p {
+  margin-top: 1rem;
+  font-weight: 100;
+  text-align: left;
+}
+
+#install-nudge {
+  padding: 0.5rem 2rem;
+  text-align: left;
+  background-color: #ffff99;
+  margin-bottom: 0;
+
+  /* Display is controlled in JavaScript */
+  display: none;
+}
+
+#install-nudge .content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#install-nudge div {
+  font-size: 0.8rem;
+  display: inline-block;
+  padding: 0.25rem 0;
+}
+
+#install-nudge * {
+  align-self: center;
+}
+
+#install-nudge a {
+  display: inline-block;
+  width: auto;
+  font-size: 0.7rem;
+  background-color: #ffffff;
+  padding: 0.25rem 1.25rem 0.25rem 1.25rem;
+  margin-left: 0.75rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 0.75rem;
+  color: #765c00;
+}
+
+#install-nudge a.close {
+  background-color: transparent;
+  padding: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  -webkit-appearance: none;
+}
+
+#status-area {
+  margin-top:1rem;
+  font-family: Menlo, Consolas, Monaco, "Lucida Console", monospace;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+#status-area h2 {
+  color: #FFFFFF;
+  font-family: Menlo, Consolas, Monaco, "Lucida Console", monospace;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+#status-area div {
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+img.install {
+  width: 375px;
+  max-width: 100%;
+  display:block;
+  margin: 0.5rem auto 1rem 0;
 }

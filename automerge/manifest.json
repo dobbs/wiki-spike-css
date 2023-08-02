@@ -1,0 +1,35 @@
+{
+  "name": "Automerge PWA",
+  "short_name": "Automerge PWA",
+  "description": "A local-first proof of concept",
+  "display": "standalone",
+  "icons": [
+    {
+      "sizes": "512x512",
+      "type": "image/png",
+      "src": "./icon-512.png",
+      "purpose": "any"
+    },
+    {
+      "sizes": "192x192",
+      "type": "image/png",
+      "src": "icon-192.png",
+      "purpose": "any"
+    },
+    {
+      "sizes": "180x180",
+      "type": "image/png",
+      "src": "icon-180.png",
+      "purpose": "any"
+    },
+    {
+      "sizes": "120x120",
+      "type": "image/png",
+      "src": "icon-120.png",
+      "purpose": "any"
+    }
+  ],
+  "background_color": "#99DAFF",
+  "theme_color": "#99DAFF",
+  "start_url": "./"
+}

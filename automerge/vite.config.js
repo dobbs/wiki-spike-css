@@ -5,6 +5,11 @@ import topLevelAwait from "vite-plugin-top-level-await"
 export default defineConfig({
   plugins: [topLevelAwait(), wasm()],
 
+  build: {
+    cssCodeSplit: false,
+    outDir: "build"
+  },
+
   // This is only necessary if you are using `SharedWorker` or `WebWorker`, as
   // documented in https://vitejs.dev/guide/features.html#import-with-constructors
   worker: {
