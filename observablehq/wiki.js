@@ -87,23 +87,29 @@ window.wiki = {
   }
 }
 
-window.wiki.update(
-  [
-    'Zip',
-    'Zippity Doo Dah. Zippity Eh. My, oh my.',
-    'Hello, World!',
-    'Welcome Visitors'
-  ].map(title => ({
-    flag:'//hello.fed.wiki/favicon.png',
-    page:{title, story:[
-      {
-        type:"paragraph",
-        text:"This is a paragraph. With an unexpanded [[Internal Link]]"
-      },
-      {
-        type:"markdown",
-        text:"This paragraph _has markdown_. [Markdown Link](//wiki.dbbs.co/apparatus.html)\n\n[https://wander.dbbs.co/commonplace-book.html External Link]"
-      }
-    ]}
-  }))
-)
+window.addEventListener("load", () => {
+  window.wiki.update(
+    [
+      'Zip',
+      'Zippity Doo Dah. Zippity Eh. My, oh my.',
+      'Hello, World!',
+      'Welcome Visitors'
+    ].map(title => ({
+      flag:'//hello.fed.wiki/favicon.png',
+      page:{title, story:[
+        {
+          type:"paragraph",
+          text:"This is a paragraph. With an unexpanded [[Internal Link]]"
+        },
+        {
+          type:"markdown",
+          text:"This paragraph _has markdown_. [Markdown Link](//wiki.dbbs.co/apparatus.html)\n\n[https://wander.dbbs.co/commonplace-book.html External Link]"
+        }
+      ]}
+    }))
+  )
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js")
+  }
+})
