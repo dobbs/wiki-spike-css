@@ -1,0 +1,123 @@
+/* replacing inline style with classes */
+
+/* looks as if there was an attempt to keep the handle on the visible page.
+   But, in reality it gets masked by page content. */
+.handle-parent { 
+  z-index: 0;
+  position: relative;
+}
+
+/* also looks to be part of keeping the handle on the visible page! */
+.page-handle {
+  z-index: 1;
+  width: 100%;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 99.4333px; /* was inline */
+}
+
+.activity-title { /* in .activity */
+  text-align: center; 
+  font-size: small; 
+  color: gray; 
+  margin-top: 14px;
+}
+
+.clear-both { /* in .activity and .backlinks */
+  clear: both;
+}
+
+.float-left { /* in .activity and .backlinks */
+  float: left;
+}
+
+.text-right { /* in .activity and .backlinks */
+  text-align: right;
+}
+
+.float-right { /* in .activity */
+  float: right; 
+  margin-right: -1.1em;
+}
+
+.frame {
+  background-color: rgb(238, 238, 238); 
+  padding: 15px;
+}
+
+.frame iframe {
+  border: none;
+}
+
+.pagefold div {
+  height: 10px; 
+  border-top: 2px solid lightgray; 
+  margin-top: 24px; 
+  text-align: center;
+  position: relative; 
+  clear: both;
+}
+
+.pagefold-text {
+  position: relative; 
+  top: -.8em;
+  background: white; 
+  display: inline-block; 
+  color: gray;
+}
+
+.assets div {
+  background-color:#eee;
+  padding:15px; 
+  margin-block-start:1em; 
+  margin-block-end:1em;
+}
+
+.assets dl {
+  margin:0;
+  color:gray;
+}
+
+.assets dd {
+  margin: 8px;
+}
+
+.assets .progress-bar {
+  background-color: #ddd;
+}
+
+.assets input {
+  display: none;
+}
+
+.display-none { /* enable edit tick */
+  display: none;
+}
+
+.html {
+  overflow-x: auto;
+}
+
+/* external link styling - was inline in style tag in html item */
+img[src="./external-link-ltr-icon.png"] {
+  display:none;
+}
+
+a.external::after {
+  content:url(./external-link-ltr-icon.png);
+}
+
+/* in footer */
+#site-owner {
+  text-transform: capitalize;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.video > img:first-of-type { /* a hack for narrow devices */
+  width: 100%;
+  height: 100%
+}
