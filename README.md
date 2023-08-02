@@ -20,4 +20,4 @@ anticipate playing with javascript to remove the dependency on old jQuery UI.
 
 [http://css-spikes.dbbs.co/observablehq/](http://css-spikes.dbbs.co/observablehq/)
 
-[http://css-spikes.dbbs.co/automerge/](http://css-spikes.dbbs.co/automerge/)
+[https://css-spikes.dbbs.co/automerge/](https://css-spikes.dbbs.co/automerge/)
