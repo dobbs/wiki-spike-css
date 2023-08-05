@@ -3,8 +3,8 @@
 body {
   margin: 0;
   padding: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -63,7 +63,7 @@ main::-webkit-scrollbar {
 /* One width. Pages scroll vertically */
 article {
   width: var(--onewidth);
-  height: calc(100vh - var(--footer-height) - 2*var(--gutter));
+  height: calc(100dvh - var(--footer-height) - 2*var(--gutter));
   margin: var(--gutter);
   white-space: normal;
   overflow-x: hidden;
@@ -89,7 +89,7 @@ article {
   min-height: 1em;
 }
 img.remote { width: 16px; height: 16px; background-color: #ccc; }
-header img { margin-bottom: -6px; }
+header img { width: 32px; height: 32px; margin-bottom: -6px; }
 
 /* Self Test. We add these check-marks as check pragmas complete. */
 .pass::after {

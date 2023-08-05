@@ -44,7 +44,7 @@ window.mod = rt.module(function define(runtime, observer) {
         return el
       }
       return (function page({
-        flag='//hello.fed.wiki/favicon.png', page:{title='Untitled', story=[]}={}
+        flag='./icon-120.png', page:{title='Untitled', story=[]}={}
       }) {
         return html`<article>
           <div class=twins></div>
@@ -96,7 +96,7 @@ window.addEventListener("load", () => {
       'Hello, World!',
       'Welcome Visitors'
     ].map(title => ({
-      flag:'//hello.fed.wiki/favicon.png',
+      flag:'./icon-120.png',
       page:{title, story:[
         {
           type:"paragraph",
