@@ -113,28 +113,77 @@
           .scrollIntoView({behavior:'smooth', block:'center'})
       }
 
+      async function recall(panel,date,shiftKey) {
+        const last = array => array[array.length-1]
+        const here = panel.id
+        if(!shiftKey) {
+          // make space in the lineup for new content
+          while(last(lineup).id != here) {
+            document.getElementById(last(lineup).id).remove()
+            lineup.pop()
+          }
+        }
+        const page = {
+          title:panel.page.title,
+          story:[],
+          journal:[]
+        }
+        const order = () => (panel.page.story||[]).map(item => item.id)
+        const add = (after, item) => {
+          const index = order().indexOf(after) + 1
+          page.story.splice(index, 0, item)
+        }
+        for(const action of panel.page.journal) {
+          switch (action.type) {
+            case 'create':
+              break
+            case 'add':
+              add(action.after, action.item)
+              break
+            case 'edit':
+              const index = order().indexOf(action.id)
+              if (index != -1)
+                page.story.splice(index,1,action.item)
+              else
+                page.story.push(action.item)
+              break
+          }
+          page.journal.push(action)
+          if(action.date == date) {
+            await render({site:panel.site,page})
+            return
+          }
+        }
+      }
+
       async function test(panel) {
         await delay(200)
+        panel.ok = true
+        const child = () => lineup[lineup.findIndex(each => each.id == panel.id)+1]
         const pragmas = panel.page.story
           .filter(item => item.type == 'paragraph' && item.text.startsWith('► '))
         for (const item of pragmas) {
           const ok = bool => {
             console.log(bool?'%cpass':'%cfail',bool?'color:green':'color:red')
             document.getElementById(item.id).classList.add(bool?'pass':'fail')
-            if(!bool) debugger
+            if(!bool) panel.ok = false
           }
           let m
           console.log(item.text)
           if(lineup.length > 10)
             {ok(false); break}
           if(m = item.text.match(/click \[\[(.+?)\]\]/))
-            {await link(m[1],panel.id,false); await delay(400)}
+            {await link(m[1],panel.id,false); ok(child()?.ok); await delay(400)}
+          if(m = item.text.match(/click action (\d+)/))
+            {await recall(panel,+m[1],false)}
           if(m = item.text.match(/drop ([^ ]+)/))
             {await drop(m[1]); await delay(400)}
           if(m = item.text.match(/check site ([\w\.-]+)/))
             {ok(lineup[lineup.length-1].site.includes(m[1]))}
           if(m = item.text.match(/check slug ([a-z-]+)/))
             {ok(asSlug(lineup[lineup.length-1].page.title).includes(m[1]))}
+          if(m = item.text.match(/check text ([^ ]+)/))
+            {ok(lineup[lineup.length-1].page.story.find(item => item.text.includes(m[1])))}
         }
       }
 
