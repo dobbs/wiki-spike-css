@@ -149,20 +149,22 @@
 
       async function test(panel) {
         await delay(200)
+        panel.ok = true
+        const child = () => lineup[lineup.findIndex(each => each.id == panel.id)+1]
         const pragmas = panel.page.story
           .filter(item => item.type == 'paragraph' && item.text.startsWith('► '))
         for (const item of pragmas) {
           const ok = bool => {
             console.log(bool?'%cpass':'%cfail',bool?'color:green':'color:red')
             document.getElementById(item.id).classList.add(bool?'pass':'fail')
-            if(!bool) debugger
+            if(!bool) panel.ok = false
           }
           let m
           console.log(item.text)
           if(lineup.length > 10)
             {ok(false); break}
           if(m = item.text.match(/click \[\[(.+?)\]\]/))
-            {await link(m[1],panel.id,false); await delay(400)}
+            {await link(m[1],panel.id,false); ok(child()?.ok); await delay(400)}
           if(m = item.text.match(/click action (\d+)/))
             {await recall(panel,+m[1])}
           if(m = item.text.match(/drop ([^ ]+)/))
