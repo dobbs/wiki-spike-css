@@ -1,0 +1,111 @@
+/* reset */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* variables */
+:root {
+  --onewidth: 490px;
+  --gutter: 8px;
+  --footer-height: 3rem;
+  --page-padding: 30px;
+}
+
+/* mark internal and external links differently */
+a {
+  text-decoration: none;
+}
+a::after {
+  content: "⬀";
+  vertical-align: super;
+  line-height: 1;
+}
+a.internal::after {
+  content: "";
+}
+
+body {
+  display: grid;
+  grid: auto var(--footer-height) / 1fr;
+  row-gap: var(--gutter);
+}
+
+/* footer */
+body > footer {
+  background: #ccc;
+  height: var(--footer-height);
+  padding: var(--gutter);
+}
+
+/* Direct Manipulation. We add scroll-snap to improve the feel of touch scrolling.  */
+/* lineup scrolls horizontally and snaps to pages */
+main {
+  display: grid;
+  grid: auto / auto-flow max-content;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+article {
+  display: inline-block;
+  scroll-snap-align: center;
+}
+main::-webkit-scrollbar {
+  display: none;
+}
+
+/* One width. Pages scroll vertically */
+article {
+  width: var(--onewidth);
+  height: calc(100vh - var(--footer-height) - 2*var(--gutter));
+  margin: var(--gutter);
+  white-space: normal;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+/* page typeface, color, and white space */
+body {
+  font-family: "Helvetica Neue", Verdana, helvetica, Arial, Sans;
+  background-color: #ebebeb;
+}
+h1, h2, h3 {
+  font-size: 18pt;
+}
+article {
+  background-color: white;
+  box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.2);  /* normal */
+  /* box-shadow: 2px 1px 24px rgba(0, 0, 0, 0.4); */  /* active */
+  padding: var(--page-padding);
+}
+/* flag sizes */
+.twins {
+  min-height: 1em;
+}
+img.remote { width: 16px; height: 16px; background-color: #ccc; }
+header img { margin-bottom: -6px; }
+
+/* Self Test. We add these check-marks as check pragmas complete. */
+.pass::after {
+  font-weight: bold;
+  color: green;
+  content: " \2713";
+}
+.fail::after {
+  font-weight: bold;
+  color: red;
+  content: " \2715"
+}
+
+@media screen and (max-width: 400px) {
+  :root {
+    --onewidth: 100vw;
+    --page-padding: 15px;
+  }
+}
