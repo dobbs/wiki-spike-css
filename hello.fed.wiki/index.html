@@ -113,7 +113,16 @@
           .scrollIntoView({behavior:'smooth', block:'center'})
       }
 
-      async function recall(panel,date) {
+      async function recall(panel,date,shiftKey) {
+        const last = array => array[array.length-1]
+        const here = panel.id
+        if(!shiftKey) {
+          // make space in the lineup for new content
+          while(last(lineup).id != here) {
+            document.getElementById(last(lineup).id).remove()
+            lineup.pop()
+          }
+        }
         const page = {
           title:panel.page.title,
           story:[],
@@ -166,7 +175,7 @@
           if(m = item.text.match(/click \[\[(.+?)\]\]/))
             {await link(m[1],panel.id,false); ok(child()?.ok); await delay(400)}
           if(m = item.text.match(/click action (\d+)/))
-            {await recall(panel,+m[1])}
+            {await recall(panel,+m[1],false)}
           if(m = item.text.match(/drop ([^ ]+)/))
             {await drop(m[1]); await delay(400)}
           if(m = item.text.match(/check site ([\w\.-]+)/))
