@@ -1,0 +1,35 @@
+{
+  "name": "Wiki PWA",
+  "short_name": "Wiki PWA",
+  "description": "A wiki folks can install on their phones",
+  "display": "standalone",
+  "icons": [
+    {
+      "sizes": "512x512",
+      "type": "image/png",
+      "src": "icon-512.png",
+      "purpose": "any"
+    },
+    {
+      "sizes": "192x192",
+      "type": "image/png",
+      "src": "icon-192.png",
+      "purpose": "any"
+    },
+    {
+      "sizes": "180x180",
+      "type": "image/png",
+      "src": "icon-180.png",
+      "purpose": "any"
+    },
+    {
+      "sizes": "120x120",
+      "type": "image/png",
+      "src": "icon-120.png",
+      "purpose": "any"
+    }
+  ],
+  "background_color": "#99DAFF",
+  "theme_color": "#99DAFF",
+  "start_url": "/pwa/"
+}

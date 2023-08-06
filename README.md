@@ -19,3 +19,7 @@ anticipate playing with javascript to remove the dependency on old jQuery UI.
 [http://css-spikes.dbbs.co/left-nav/](http://css-spikes.dbbs.co/left-nav/)
 
 [http://css-spikes.dbbs.co/observablehq/](http://css-spikes.dbbs.co/observablehq/)
+
+[http://css-spikes.dbbs.co/snap-scroll/](http://css-spikes.dbbs.co/snap-scroll/)
+
+[http://css-spikes.dbbs.co/pwa/](http://css-spikes.dbbs.co/pwa/)
