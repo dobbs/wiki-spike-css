@@ -16,7 +16,7 @@
       const delay = time => new Promise(res => setTimeout(res,time))
 
       const lineup = [] // {page,id}...
-      const pages = [] // {site,slug,page}...
+      let pages = [] // {site,slug,page}...
 
       const params = new URLSearchParams(location.search)
       const origin = params.get('site') || 'hello.fed.wiki'
@@ -25,11 +25,7 @@
         const slug = params.get('slug') || 'welcome-visitors'
         const view = r => `${r.site==origin?'view':r.site}/${asSlug(r.page.title)}`
         const legacy = () => window.open(`http://${origin}/${lineup.map(view).join('/')}`,'_blank')
-        const jsonl = await fetch('./pages.jsonl').then(res => res.text())
-        console.log({jsonl})
-        for (const line of jsonl.trim().split("\n")) {
-          pages.push(JSON.parse(line))
-        }
+        pages = await fetch('./pages.json').then(res => res.json())
         await render(await resolve([origin],slug))
         window.lineup.addEventListener('click',async event => {
           const target = event.target
@@ -56,7 +52,6 @@
         // retrieve page json following all the collaborative rules
         const site = context.shift()
         const index = pages.findIndex(cache => cache.site==site && cache.slug==slug)
-        console.log({site,slug,index})
         if (index != -1) return {site,page:pages[index].page}
         return await fetch(`//${site}/${slug}.json`)
             .then(async res => res.ok && res.status==200 ?
@@ -136,7 +131,6 @@
         const panel = lineup.find(panel => panel.id == id.split('.')[0])
         const item = panel.page.story.find(item => item.id == id.split('.')[1])
         const changed = item.text != text
-        console.log({id,changed,html,text,panel,item})
         if(changed) {
           const type = 'edit'
           const id = item.id
