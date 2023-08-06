@@ -16,6 +16,8 @@
       const delay = time => new Promise(res => setTimeout(res,time))
 
       const lineup = [] // {page,id}...
+      const pages = [] // {site,slug,page}...
+
       const params = new URLSearchParams(location.search)
       const origin = params.get('site') || 'hello.fed.wiki'
 
@@ -23,6 +25,11 @@
         const slug = params.get('slug') || 'welcome-visitors'
         const view = r => `${r.site==origin?'view':r.site}/${asSlug(r.page.title)}`
         const legacy = () => window.open(`http://${origin}/${lineup.map(view).join('/')}`,'_blank')
+        const jsonl = await fetch('./pages.jsonl').then(res => res.text())
+        console.log({jsonl})
+        for (const line of jsonl.trim().split("\n")) {
+          pages.push(JSON.parse(line))
+        }
         await render(await resolve([origin],slug))
         window.lineup.addEventListener('click',async event => {
           const target = event.target
@@ -33,21 +40,36 @@
             link(title,here,event.shiftKey)
           }
         })
+        window.lineup.addEventListener('focusout', async event => {
+          const target = event.target
+          edit(target.id, target.innerHTML)
+        })
         window.addEventListener("dragstart", event => event.preventDefault())
         window.addEventListener("dragover", event => event.preventDefault())
         window.addEventListener("drop", event => {
           event.preventDefault()
           drop(event.dataTransfer.getData("url"))})
-        window.debug = {origin,lineup,legacy}
+        window.debug = {origin,lineup,pages,legacy}
       }
 
       async function resolve(context,slug) {
         // retrieve page json following all the collaborative rules
         const site = context.shift()
-        return await fetch(`http://${site}/${slug}.json`)
+        const index = pages.findIndex(cache => cache.site==site && cache.slug==slug)
+        console.log({site,slug,index})
+        if (index != -1) return {site,page:pages[index].page}
+        return await fetch(`//${site}/${slug}.json`)
             .then(async res => res.ok && res.status==200 ?
               {site, page:(await res.json())} :
               resolve(context,slug))
+      }
+
+      async function post(site,slug,page) {
+        const index = pages.findIndex(cache => cache.site==site && cache.slug==slug)
+        if(index == -1)
+          pages.push({site,slug,page})
+        else
+          pages[index].page = page
       }
 
       async function render(panel) {
@@ -60,7 +82,7 @@
         lineup.push(panel)
         const body = panel.page.story
           .filter(item => item.type == 'paragraph')
-          .map(item => `<p id="${item.id}">${linked(escape(item.text))}</p>`)
+          .map(item => `<p id="${panel.id}.${item.id}" contenteditable="true">${linked(escape(item.text))}</p>`)
           .join("\n")
         window.lineup.innerHTML += `
           <div class=page id=${panel.id}>
@@ -101,6 +123,28 @@
         window.lineup
           .querySelector('.page:last-of-type')
           .scrollIntoView({behavior:'smooth', block:'center'})
+      }
+
+      async function edit(id,html) {
+        const tuple = id.split('.')
+        const text = html
+          .replace(/<\/?(b|i|u)>/g,'')
+          .replace(/<a href="(https?:.+?)">(.+?)<\/a>/g,(_,url,word) => `[${url} ${word}]`)
+          .replace(/<a href="#">(.+?)<\/a>/g,(_,title) => `[[${title}]]`)
+          .replace(/&amp;/g,'&').replace(/&lt;/g,'<')
+        const panel = lineup.find(panel => panel.id == id.split('.')[0])
+        const item = panel.page.story.find(item => item.id == id.split('.')[1])
+        const changed = item.text != text
+        console.log({id,changed,html,text,panel,item})
+        if(changed) {
+          const type = 'edit'
+          const id = item.id
+          const date = Date.now()
+          item.text = text
+          const action = {type,id,date,item}
+          panel.page.journal.push(action)
+          post(panel.site, asSlug(panel.page.title), panel.page)
+        }
       }
 
       async function drop(url) {
@@ -165,7 +209,7 @@
         for (const item of pragmas) {
           const ok = bool => {
             console.log(bool?'%cpass':'%cfail',bool?'color:green':'color:red')
-            document.getElementById(item.id).classList.add(bool?'pass':'fail')
+            document.getElementById(`${panel.id}.${item.id}`).classList.add(bool?'pass':'fail')
             if(!bool) panel.ok = false
           }
           let m
