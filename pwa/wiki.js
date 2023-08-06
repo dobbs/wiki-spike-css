@@ -60,17 +60,6 @@ window.mod = rt.module(function define(runtime, observer) {
   }
 })
 
-const channel = new BroadcastChannel('wiki')
-channel.onmessage = async function message(event) {
-  if (typeof event.data == "object") {
-    const {action='unknown', data={}} = event.data
-    switch(action) {
-    case 'update':
-      window.mod.redefine('lineup', () => event.data.lineup)
-      break
-    }
-  }
-}
 window.wiki = {
   findPage({title, context=[]}) {
     for(let siteMap of context) {
@@ -84,7 +73,6 @@ window.wiki = {
   },
   update(lineup) {
     window.mod.redefine('lineup', () => lineup)
-    channel.postMessage({action:'update', lineup})
   }
 }
 
