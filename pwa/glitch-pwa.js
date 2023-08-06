@@ -8,7 +8,7 @@ App setup
 
 *************************************************************************/
 // force https
-if (location.hostname !~ /^localhost$|\.local$/ && location.protocol === "http:") {
+if (!/^localhost$|\.local$/i.test(location.hostname) && location.protocol === "http:") {
   location.protocol = "https:";
 }
 
@@ -72,7 +72,7 @@ function handleCloseButton() {
 if (!isInstalledPWA && installNudge && !hideBanner) {
   installNudge.style.display = "block";
   closeButton.addEventListener("click", handleCloseButton);
-} else {
+} else if (installNudge) {
   installNudge.style.display = "none";
 }
 
