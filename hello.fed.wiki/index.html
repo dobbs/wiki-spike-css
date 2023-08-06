@@ -132,6 +132,7 @@
           .replace(/<a href="(https?:.+?)">(.+?)<\/a>/g,(_,url,word) => `[${url} ${word}]`)
           .replace(/<a href="#">(.+?)<\/a>/g,(_,title) => `[[${title}]]`)
           .replace(/&amp;/g,'&').replace(/&lt;/g,'<')
+          .replace(/&nbsp;/g,' ')
         const panel = lineup.find(panel => panel.id == id.split('.')[0])
         const item = panel.page.story.find(item => item.id == id.split('.')[1])
         const changed = item.text != text
