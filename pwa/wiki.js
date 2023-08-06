@@ -126,7 +126,7 @@ function ghost(title, story) {
 
 async function sitemap(domain) {
   try {
-    const res = await fetch('//wiki.dbbs.co/system/sitemap.json')
+    const res = await fetch(`//${domain}/system/sitemap.json`)
     return res.json()
   } catch (error) {
     return {error}
