@@ -1,0 +1,63 @@
+digraph {
+  node [shape=box style="rounded,filled"]
+
+  {node [fillcolor="palegreen"] Achieved
+    PWA SW Offline}
+  {node [fillcolor="lightblue"] Wiki
+    Site Frame}
+  {node [fillcolor="bisque"]    Tool
+    SWCache IndexDB}
+  {node [fillcolor="pink"]      Parts
+    item text charms}
+
+  subgraph cluster_1 {
+    Anticipate
+    Achieved
+    Wiki
+    Tool
+    Parts
+  } -> {PWA item} [style=invis]
+
+  PWA [label="Progressive\nWeb App (PWA)"]
+  SW [label="Service\nWorker"]
+  Offline [label="offline mode with\nknown files"]
+  Files [label="known files"]
+  Edit [label="editor and\ndownload\npages"]
+  Sitemap [label="browse one\nsitemap"]
+  Page [label="fetch\none page"]
+  Publish [label="(re)publish\n(to github or glitch)"]
+  Cache [label="cache all\npages"]
+
+  Site [label="SiteAdaptor"]
+  Frame [label="FramePlugin"]
+  SWCache [label="SW Cache"]
+  IndexDB
+
+  EditCode [label="code editor"]
+  Plugins [label="plugins\ncollection"]
+  Schema [label="schema\nmigration"]
+
+  Site -> {Sitemap Cache} [label="informs"]
+
+  PWA -> Edit
+
+  item -> {text charms} -> Edit
+
+  Edit -> Files [label="create\nnew"]
+  PWA ->EditCode -> Plugins -> Files
+  Frame -> {EditCode Plugins} [label="informs"]
+
+  PWA -> Sitemap -> Page
+  Sitemap -> Cache -> Files
+  Page -> Files [label="cache"]
+  {SWCache IndexDB Files}
+
+  Files -> Publish -> Schema
+  Files -> choose -> {IndexDB SWCache} -> Schema
+  Schema -> PWA [label="what does\nupdate\nlook like?"]
+
+  Files -> Offline
+  PWA -> SW
+  SW -> Offline
+
+}
