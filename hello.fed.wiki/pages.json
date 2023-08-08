@@ -1695,5 +1695,669 @@
         }
       ]
     }
+  },
+  {
+    "site": "hello.ward.bay.wiki.org",
+    "slug": "featured-sites",
+    "page": {
+      "title": "Featured Sites",
+      "story": [
+        {
+          "type": "paragraph",
+          "id": "3be3efdd16064df6",
+          "text": "You can browse to any of these sites without leaving your own. Always start at your own site so that anything you find that you want to keep can be forked to there. (cached)"
+        },
+        {
+          "type": "html",
+          "id": "6d994130e60f4e2a",
+          "text": "Tip: Fork a page with the <a href=\"#\" class=\"button\" title=\"fork this page\">⚑</a>&nbsp; button."
+        },
+        {
+          "type": "paragraph",
+          "id": "ce1878d1eb16c946",
+          "text": "[[Featured Projects]] where we organize and document our work for a while and then move on."
+        },
+        {
+          "type": "paragraph",
+          "id": "095aa926ec4a6d14",
+          "text": "[[Featured Talks]] where I prepared a wiki as presentation, notes and links for attendees."
+        },
+        {
+          "type": "paragraph",
+          "id": "c11b7d210868abe6",
+          "text": "[[Featured Journals]] where we write about what we read and sometimes what we think."
+        },
+        {
+          "type": "paragraph",
+          "id": "7a3c50f0bb156a1a",
+          "text": "[[Featured Documentation]] where we explain how things work around here."
+        }
+      ],
+      "journal": [
+        {
+          "type": "create",
+          "item": {
+            "title": "Featured Sites",
+            "story": []
+          },
+          "date": 1465752432954
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "3be3efdd16064df6"
+          },
+          "id": "3be3efdd16064df6",
+          "type": "add",
+          "date": 1465752444918
+        },
+        {
+          "type": "edit",
+          "id": "3be3efdd16064df6",
+          "item": {
+            "type": "paragraph",
+            "id": "3be3efdd16064df6",
+            "text": "You can browse to any of these sites without leaving your own. Always start at your own site so that anything you find that you want to keep can be forked to there."
+          },
+          "date": 1465752562727
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "6d994130e60f4e2a"
+          },
+          "id": "6d994130e60f4e2a",
+          "type": "add",
+          "after": "3be3efdd16064df6",
+          "date": 1465752774712
+        },
+        {
+          "type": "edit",
+          "id": "6d994130e60f4e2a",
+          "item": {
+            "type": "html",
+            "id": "6d994130e60f4e2a",
+            "text": "Tip: Fork a page with the button on the bottom right of every page."
+          },
+          "date": 1465752807002
+        },
+        {
+          "type": "edit",
+          "id": "6d994130e60f4e2a",
+          "item": {
+            "type": "html",
+            "id": "6d994130e60f4e2a",
+            "text": "Tip: Fork a page with the <a href=\"#\" class=\"button fork-page\" title=\"fork this page\">⚑</a> button on the bottom right of every page."
+          },
+          "date": 1465752881290
+        },
+        {
+          "type": "edit",
+          "id": "6d994130e60f4e2a",
+          "item": {
+            "type": "html",
+            "id": "6d994130e60f4e2a",
+            "text": "Tip: Fork a page with the <a href=\"#\" class=\"button fork-page\" title=\"fork this page\">⚑</a>&nbsp; button on the bottom right of every page."
+          },
+          "date": 1465752900730
+        },
+        {
+          "type": "edit",
+          "id": "6d994130e60f4e2a",
+          "item": {
+            "type": "html",
+            "id": "6d994130e60f4e2a",
+            "text": "Tip: Fork a page with the <a href=\"#\" class=\"button\" title=\"fork this page\">⚑</a>&nbsp; button on the bottom right of every page."
+          },
+          "date": 1465752923087
+        },
+        {
+          "type": "edit",
+          "id": "6d994130e60f4e2a",
+          "item": {
+            "type": "html",
+            "id": "6d994130e60f4e2a",
+            "text": "Tip: Fork a page with the <a href=\"#\" class=\"button\" title=\"fork this page\">⚑</a>&nbsp; button."
+          },
+          "date": 1465752958873
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "c11b7d210868abe6"
+          },
+          "id": "c11b7d210868abe6",
+          "type": "add",
+          "after": "6d994130e60f4e2a",
+          "date": 1465753155383
+        },
+        {
+          "type": "edit",
+          "id": "c11b7d210868abe6",
+          "item": {
+            "type": "paragraph",
+            "id": "c11b7d210868abe6",
+            "text": "[[Featured Journals]] where we write about what we read and sometimes what we think."
+          },
+          "date": 1465753224124
+        },
+        {
+          "type": "add",
+          "id": "ce1878d1eb16c946",
+          "item": {
+            "type": "paragraph",
+            "id": "ce1878d1eb16c946",
+            "text": "[[Featured Projects]] where we organize and document our work for a while and then move on."
+          },
+          "after": "c11b7d210868abe6",
+          "date": 1465753309170
+        },
+        {
+          "type": "add",
+          "id": "7a3c50f0bb156a1a",
+          "item": {
+            "type": "paragraph",
+            "id": "7a3c50f0bb156a1a",
+            "text": "[[Featured Documentation]] where we explain how things work around here."
+          },
+          "after": "ce1878d1eb16c946",
+          "date": 1465753360766
+        },
+        {
+          "type": "add",
+          "id": "095aa926ec4a6d14",
+          "item": {
+            "type": "paragraph",
+            "id": "095aa926ec4a6d14",
+            "text": "[[Featured Talks]] where I prepared a wiki as notes and links for attendees."
+          },
+          "after": "ce1878d1eb16c946",
+          "date": 1465760339898
+        },
+        {
+          "type": "edit",
+          "id": "095aa926ec4a6d14",
+          "item": {
+            "type": "paragraph",
+            "id": "095aa926ec4a6d14",
+            "text": "[[Featured Talks]] where I prepared a wiki as presentation, notes and links for attendees."
+          },
+          "date": 1465760357601
+        },
+        {
+          "id": "c11b7d210868abe6",
+          "type": "move",
+          "order": [
+            "3be3efdd16064df6",
+            "6d994130e60f4e2a",
+            "ce1878d1eb16c946",
+            "095aa926ec4a6d14",
+            "c11b7d210868abe6",
+            "7a3c50f0bb156a1a"
+          ],
+          "date": 1598118818502
+        },
+        {
+          "type": "edit",
+          "id": "3be3efdd16064df6",
+          "date": 1691525747670,
+          "item": {
+            "type": "paragraph",
+            "id": "3be3efdd16064df6",
+            "text": "You can browse to any of these sites without leaving your own. Always start at your own site so that anything you find that you want to keep can be forked to there. (cached)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "site": "hello.ward.bay.wiki.org",
+    "slug": "featured-talks",
+    "page": {
+      "title": "Featured Talks",
+      "story": [
+        {
+          "type": "paragraph",
+          "id": "c6585415dbe5b630",
+          "text": "I speak often about federated wiki and have prepared new notes from my writing here for each presentation. (cached)"
+        },
+        {
+          "type": "paragraph",
+          "id": "37f72fe9981ed769",
+          "text": "Tip: Find a talk where the first page seems to be talking to you then wander through its many pages."
+        },
+        {
+          "type": "reference",
+          "id": "e56dff9116a54c4b",
+          "site": "chifoo.bay.wiki.org",
+          "slug": "chorus-media",
+          "title": "Chorus Media",
+          "text": "A Media for a Chorus of Voices. A presentation to CHIFOO on March 2, 2016. About reinventing Wiki and how it helped distribute the internet’s idealistic founding with technological innovation since its inception. [http://chifoo.org/a-media-for-a-chorus-of-voices/ chifoo]\n\n"
+        },
+        {
+          "type": "reference",
+          "id": "285b204bb2cc7075",
+          "site": "oop.bay.wiki.org",
+          "slug": "oop-2016-keynote",
+          "title": "OOP 2016 Keynote",
+          "text": "Over a quarter of a century, OOP provides the platform for both technical and business professionals to update their knowledge and share their wisdom. I return to the conference to reflect on the history and future of objects, patterns, agile and wiki. [http://www.oop-konferenz.de/oop2016/startseite-englisch/conference/keynotes.html site]"
+        },
+        {
+          "type": "reference",
+          "id": "61660b9d8b6790b8",
+          "site": "chifoo.bay.wiki.org",
+          "slug": "write-the-docs",
+          "title": "Write the Docs",
+          "text": "Just as the first wiki changed how people write, our new wiki will change how people work. By pushing steadily on two fundamental ideas we have once again uncovered a simpler and more powerful internet."
+        },
+        {
+          "type": "reference",
+          "id": "72e976e78bbe3da0",
+          "site": "dots.ward.asia.wiki.org",
+          "slug": "spray-dots",
+          "title": "Spray Dots",
+          "text": "We explore painting things that move with dots that follow. We use placement and motion in the plane to represent abstract concepts rather than precise motion in the domain."
+        },
+        {
+          "type": "reference",
+          "id": "c59ac0d2d875aaf8",
+          "site": "dork.wiki.org",
+          "slug": "federated-wiki-workshop",
+          "title": "Federated Wiki Workshop",
+          "text": "The workshop will guide you in installing, using and sharing in a progression of 25 minute sprints called, for obscure reasons, pomodoros."
+        },
+        {
+          "type": "reference",
+          "id": "98f6ed11dc83ddc8",
+          "site": "splash.fed.wiki.org",
+          "slug": "splash-2014",
+          "title": "Splash 2014",
+          "text": "We collect here principles and beliefs that have informed the prolonged design of federated wiki. This material contains the basis of and supplement to a talk presented in the Wavefront track at the once OOPSLA now Splash ACM conference in Portland. [http://2014.splashcon.org/event/splash2014-wavefront-ward-cunningham-talk page] [http://c2.com/wiki/Splash.pdf slides] [http://www.infoq.com/presentations/federated-wiki video]"
+        },
+        {
+          "type": "reference",
+          "id": "01158887dc389146",
+          "site": "song.fed.wiki.org",
+          "slug": "song-of-code-and-content",
+          "title": "Song of Code and Content",
+          "text": "Agile programming and Wiki hypertext emerged together out of a single vision of completing each other's work. Twenty years later we see opportunity to direct this collaboration toward more difficult problems. This is not your father's wiki."
+        },
+        {
+          "type": "reference",
+          "id": "d92f6f0f2b851d0e",
+          "site": "oscon.fed.wiki.org",
+          "slug": "oscon-2014-hw-showcase",
+          "title": "OSCON 2014 H/W Showcase",
+          "text": "We show how federating wiki enables a new paradigm for instrument control, data collection, interpretation and open publication. Txtzyme provides a model for programmable instrumentation with client and server-side plugins supporting it."
+        },
+        {
+          "type": "reference",
+          "id": "f8591851559c96ba",
+          "site": "tug.fed.wiki.org",
+          "slug": "another-wiki-omg-why",
+          "title": "Another Wiki? OMG Why?",
+          "text": "I prepared this abstract for the 2014 TeX User Group (TUG) conference in Portland. Here I annotate it with materials that I will draw on preparing my talk. [http://tug.org/tug2014/ website]"
+        },
+        {
+          "type": "reference",
+          "id": "b66a31dc879c0ec2",
+          "site": "hsi.fed.wiki.org",
+          "slug": "hacking-social-impact",
+          "title": "Hacking Social Impact",
+          "text": "To bring together in a dynamic and collaborative environment the leaders in social impact, business, and venture capital investment innovation. [http://socialventuresociety.org/unconference/ website] [http://us6.campaign-archive2.com/?u=adeb969bbfd2716b2416778ac&id=93902578be details]"
+        },
+        {
+          "type": "reference",
+          "id": "146d44a4cb66e4b7",
+          "site": "oscon.fed.wiki.org",
+          "slug": "oscon-2012-demo-video",
+          "title": "OSCON 2012 Demo Video",
+          "text": "We recreate the calculation refactoring example from the open source conference and invite viewers to try it themselves."
+        }
+      ],
+      "journal": [
+        {
+          "type": "create",
+          "item": {
+            "title": "Featured Talks",
+            "story": []
+          },
+          "date": 1465760368439
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "c6585415dbe5b630"
+          },
+          "id": "c6585415dbe5b630",
+          "type": "add",
+          "date": 1465760437881
+        },
+        {
+          "type": "edit",
+          "id": "c6585415dbe5b630",
+          "item": {
+            "type": "paragraph",
+            "id": "c6585415dbe5b630",
+            "text": "I speak often about federated wiki and have prepared new notes from my writing here for each presentation."
+          },
+          "date": 1465760486164
+        },
+        {
+          "type": "add",
+          "id": "37f72fe9981ed769",
+          "item": {
+            "type": "paragraph",
+            "id": "37f72fe9981ed769",
+            "text": "Tip: Find a talk where the first page seems to be talking to you then wander through its many pages."
+          },
+          "after": "c6585415dbe5b630",
+          "date": 1465760638568
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "e56dff9116a54c4b"
+          },
+          "id": "e56dff9116a54c4b",
+          "type": "add",
+          "after": "37f72fe9981ed769",
+          "date": 1465760641916
+        },
+        {
+          "type": "edit",
+          "id": "e56dff9116a54c4b",
+          "item": {
+            "type": "reference",
+            "id": "e56dff9116a54c4b",
+            "site": "chifoo.bay.wiki.org",
+            "slug": "chorus-media",
+            "title": "Chorus Media",
+            "text": "A Media for a Chorus of Voices. A presentation to CHIFOO on March 2, 2016. About reinventing Wiki and how it helped distribute the internet’s idealistic founding with technological innovation since its inception. [http://chifoo.org/a-media-for-a-chorus-of-voices/ chifoo]\n\n"
+          },
+          "date": 1465760670871
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "285b204bb2cc7075"
+          },
+          "id": "285b204bb2cc7075",
+          "type": "add",
+          "after": "e56dff9116a54c4b",
+          "date": 1465760684982
+        },
+        {
+          "type": "edit",
+          "id": "285b204bb2cc7075",
+          "item": {
+            "type": "reference",
+            "id": "285b204bb2cc7075",
+            "site": "oop.bay.wiki.org",
+            "slug": "oop-2016-keynote",
+            "title": "OOP 2016 Keynote",
+            "text": "Over a quarter of a century, OOP provides the platform for both technical and business professionals to update their knowledge and share their wisdom. I return to the conference to reflect on the history and future of objects, patterns, agile and wiki. [http://www.oop-konferenz.de/oop2016/startseite-englisch/conference/keynotes.html site]"
+          },
+          "date": 1465760716511
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "61660b9d8b6790b8"
+          },
+          "id": "61660b9d8b6790b8",
+          "type": "add",
+          "after": "285b204bb2cc7075",
+          "date": 1465760724088
+        },
+        {
+          "type": "edit",
+          "id": "61660b9d8b6790b8",
+          "item": {
+            "type": "reference",
+            "id": "61660b9d8b6790b8",
+            "site": "chifoo.bay.wiki.org",
+            "slug": "write-the-docs",
+            "title": "Write the Docs",
+            "text": "Just as the first wiki changed how people write, our new wiki will change how people work. By pushing steadily on two fundamental ideas we have once again uncovered a simpler and more powerful internet."
+          },
+          "date": 1465760749409
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "72e976e78bbe3da0"
+          },
+          "id": "72e976e78bbe3da0",
+          "type": "add",
+          "after": "61660b9d8b6790b8",
+          "date": 1465760766336
+        },
+        {
+          "type": "edit",
+          "id": "72e976e78bbe3da0",
+          "item": {
+            "type": "reference",
+            "id": "72e976e78bbe3da0",
+            "site": "dots.ward.asia.wiki.org",
+            "slug": "spray-dots",
+            "title": "Spray Dots",
+            "text": "We explore painting things that move with dots that follow. We use placement and motion in the plane to represent abstract concepts rather than precise motion in the domain."
+          },
+          "date": 1465760901713
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "c59ac0d2d875aaf8"
+          },
+          "id": "c59ac0d2d875aaf8",
+          "type": "add",
+          "after": "72e976e78bbe3da0",
+          "date": 1465760908342
+        },
+        {
+          "type": "edit",
+          "id": "c59ac0d2d875aaf8",
+          "item": {
+            "type": "reference",
+            "id": "c59ac0d2d875aaf8",
+            "site": "dork.wiki.org",
+            "slug": "federated-wiki-workshop",
+            "title": "Federated Wiki Workshop",
+            "text": "The workshop will guide you in installing, using and sharing in a progression of 25 minute sprints called, for obscure reasons, pomodoros."
+          },
+          "date": 1465760958857
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "98f6ed11dc83ddc8"
+          },
+          "id": "98f6ed11dc83ddc8",
+          "type": "add",
+          "after": "c59ac0d2d875aaf8",
+          "date": 1465761001898
+        },
+        {
+          "type": "edit",
+          "id": "98f6ed11dc83ddc8",
+          "item": {
+            "type": "reference",
+            "id": "98f6ed11dc83ddc8",
+            "site": "splash.fed.wiki.org",
+            "slug": "splash-2014",
+            "title": "Splash 2014",
+            "text": "We collect here principles and beliefs that have informed the prolonged design of federated wiki. This material contains the basis of and supplement to a talk presented in the Wavefront track at the once OOPSLA now Splash ACM conference in Portland. [http://2014.splashcon.org/event/splash2014-wavefront-ward-cunningham-talk page] [http://c2.com/wiki/Splash.pdf slides] [http://www.infoq.com/presentations/federated-wiki video]"
+          },
+          "date": 1465761012508
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "01158887dc389146"
+          },
+          "id": "01158887dc389146",
+          "type": "add",
+          "after": "98f6ed11dc83ddc8",
+          "date": 1465761080474
+        },
+        {
+          "type": "edit",
+          "id": "01158887dc389146",
+          "item": {
+            "type": "reference",
+            "id": "01158887dc389146",
+            "site": "song.fed.wiki.org",
+            "slug": "song-of-code-and-content",
+            "title": "Song of Code and Content",
+            "text": "Agile programming and Wiki hypertext emerged together out of a single vision of completing each other's work. Twenty years later we see opportunity to direct this collaboration toward more difficult problems. This is not your father's wiki."
+          },
+          "date": 1465761083351
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "f8591851559c96ba"
+          },
+          "id": "f8591851559c96ba",
+          "type": "add",
+          "after": "01158887dc389146",
+          "date": 1465761148734
+        },
+        {
+          "type": "edit",
+          "id": "f8591851559c96ba",
+          "item": {
+            "type": "reference",
+            "id": "f8591851559c96ba",
+            "site": "tug.fed.wiki.org",
+            "slug": "another-wiki-omg-why",
+            "title": "Another Wiki? OMG Why?",
+            "text": "I prepared this abstract for the 2014 TeX User Group (TUG) conference in Portland. Here I annotate it with materials that I will draw on preparing my talk. [http://tug.org/tug2014/ website]"
+          },
+          "date": 1465761155215
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "b66a31dc879c0ec2"
+          },
+          "id": "b66a31dc879c0ec2",
+          "type": "add",
+          "after": "f8591851559c96ba",
+          "date": 1465761338079
+        },
+        {
+          "type": "edit",
+          "id": "b66a31dc879c0ec2",
+          "item": {
+            "type": "reference",
+            "id": "b66a31dc879c0ec2",
+            "site": "hsi.fed.wiki.org",
+            "slug": "hacking-social-impact",
+            "title": "Hacking Social Impact",
+            "text": "To bring together in a dynamic and collaborative environment the leaders in social impact, business, and venture capital investment innovation. [http://socialventuresociety.org/unconference/ website] [http://us6.campaign-archive2.com/?u=adeb969bbfd2716b2416778ac&id=93902578be details]"
+          },
+          "date": 1465761344857
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "146d44a4cb66e4b7"
+          },
+          "id": "146d44a4cb66e4b7",
+          "type": "add",
+          "after": "b66a31dc879c0ec2",
+          "date": 1465762412976
+        },
+        {
+          "type": "edit",
+          "id": "146d44a4cb66e4b7",
+          "item": {
+            "type": "reference",
+            "id": "146d44a4cb66e4b7",
+            "site": "oscon.fed.wiki.org",
+            "slug": "oscon-2012-demo-video",
+            "title": "OSCON 2012 Demo Video",
+            "text": "We recreate the calculation refactoring example from the open source conference and invite viewers to try it themselves."
+          },
+          "date": 1465762420397
+        },
+        {
+          "item": {
+            "type": "factory",
+            "id": "d92f6f0f2b851d0e"
+          },
+          "id": "d92f6f0f2b851d0e",
+          "type": "add",
+          "after": "146d44a4cb66e4b7",
+          "date": 1465762446616
+        },
+        {
+          "type": "edit",
+          "id": "d92f6f0f2b851d0e",
+          "item": {
+            "type": "reference",
+            "id": "d92f6f0f2b851d0e",
+            "site": "oscon.fed.wiki.org",
+            "slug": "oscon-2014-hw-showcase",
+            "title": "OSCON 2014 H/W Showcase",
+            "text": "We show how federating wiki enables a new paradigm for instrument control, data collection, interpretation and open publication. Txtzyme provides a model for programmable instrumentation with client and server-side plugins supporting it."
+          },
+          "date": 1465762458078
+        },
+        {
+          "type": "move",
+          "order": [
+            "c6585415dbe5b630",
+            "37f72fe9981ed769",
+            "e56dff9116a54c4b",
+            "285b204bb2cc7075",
+            "61660b9d8b6790b8",
+            "72e976e78bbe3da0",
+            "c59ac0d2d875aaf8",
+            "98f6ed11dc83ddc8",
+            "01158887dc389146",
+            "f8591851559c96ba",
+            "d92f6f0f2b851d0e",
+            "b66a31dc879c0ec2",
+            "146d44a4cb66e4b7"
+          ],
+          "id": "d92f6f0f2b851d0e",
+          "date": 1465762470143
+        },
+        {
+          "type": "move",
+          "order": [
+            "c6585415dbe5b630",
+            "37f72fe9981ed769",
+            "e56dff9116a54c4b",
+            "285b204bb2cc7075",
+            "61660b9d8b6790b8",
+            "72e976e78bbe3da0",
+            "c59ac0d2d875aaf8",
+            "98f6ed11dc83ddc8",
+            "01158887dc389146",
+            "d92f6f0f2b851d0e",
+            "f8591851559c96ba",
+            "b66a31dc879c0ec2",
+            "146d44a4cb66e4b7"
+          ],
+          "id": "d92f6f0f2b851d0e",
+          "date": 1465762476269
+        },
+        {
+          "type": "edit",
+          "id": "c6585415dbe5b630",
+          "date": 1691525764057,
+          "item": {
+            "type": "paragraph",
+            "id": "c6585415dbe5b630",
+            "text": "I speak often about federated wiki and have prepared new notes from my writing here for each presentation. (cached)"
+          }
+        }
+      ]
+    }
   }
 ]
