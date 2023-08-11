@@ -4,8 +4,8 @@ import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.0.5/+esm'
 window.addEventListener("load", async () => {
   const wiki = {}
 
-  document.addEventListener('dragstart', e => e.preventDefault())
-  document.addEventListener('dragover', e => e.preventDefault())
+  document.addEventListener('dragstart', event => event.preventDefault())
+  document.addEventListener('dragover', event => event.preventDefault())
   document.addEventListener('drop', async function drop(event) {
     event.preventDefault()
     const {files, items, types} = (event.dataTransfer||{})
@@ -30,6 +30,25 @@ window.addEventListener("load", async () => {
       items,
       types
     }]))
+  })
+
+  document.querySelector('footer form').addEventListener('submit', async event => {
+    event.preventDefault()
+    const site = await wiki.sitemap(new FormData(event.target).get('domain'))
+    const {domain, sitemap} = site
+    const panel = ghost(
+      domain,
+      sitemap
+        .sort((left, right) => left.date > right.date ? -1 : 1)
+        .map(({synopsis, slug, title, date}) => ({
+          type: 'reference',
+          site: domain,
+          slug,
+          title,
+          text: synopsis
+        })))
+    panel.flag = `//${domain}/favicon.png`
+    wiki.addPanel(panel)
   })
 
   function linked(text) {
@@ -86,6 +105,33 @@ window.addEventListener("load", async () => {
         type: 'markdown',
         deps: ['md'],
         fn: item => md => annotateLinks(md`${linked(item.text)}`)
+      },
+      {
+        type: 'reference',
+        deps: ['html'],
+        fn: item => html => {
+          const {site, slug, title, text} = item
+          const flag = `//${site}/favicon.png`
+          const p = annotateLinks(html`
+          <p><img class="remote" src="${flag}">
+            <a class="internal" data-title="${title}"
+               href="//${site}/${slug}.html">${title}</a> - ${linked(text)}`)
+
+          p.querySelector('a[data-title]').addEventListener('click', async (event) => {
+            event.preventDefault()
+            try {
+              const res = await fetch(`//${site}/${slug}.json`)
+              let page =  await res.json()
+              wiki.addPanel({id: randomId(), flag, page})
+            } catch(error) {
+              wiki.addPanel(ghost(title, [{
+                type: 'unknown',
+                text: 'create this page'
+              }]))
+            }
+          })
+          return p
+        }
       }
     ],
     addPanel(panel, replaceId=null) {
@@ -223,7 +269,7 @@ async function sitemap(domain) {
     const res = await fetch(`//${domain}/system/sitemap.json`)
     return {
       domain,
-      sitemap: res.json()
+      sitemap: await res.json()
     }
   } catch (error) {
     return {error}
