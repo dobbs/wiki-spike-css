@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
   Object.assign(wiki, {
     runtime: new Runtime(Object.assign(lib, {
       toJSON: () => obj => JSON.stringify(obj, null, 2),
-      //html: brokenSanitizeAdaptor(lib)
+      //html: brokenSanitizeAdapter(lib)
     })),
     lineup: [],
     plugins: [
@@ -104,7 +104,12 @@ window.addEventListener("load", async () => {
     ]))
 })
 
-function panelAdaptor({id, flag, page: {title, story=[], journal=[]}}) {
+function panelAdapter({id, flag, page: {title, story=[], journal=[]}}) {
+  // TODO panelAdapter() is not the right name--keep having to ask
+  // what this thing does. It is an adapter which adapts a wiki panel
+  // into an Observable module definition. But the name on the outside
+  // doesn't explain the role within Observable.
+
   // TODO maybe change flag to site and lookup the flag from the site
   return function define(runtime, observer) {
     const main = runtime.module()
@@ -146,7 +151,7 @@ function panelAdaptor({id, flag, page: {title, story=[], journal=[]}}) {
 
 function panelModule(runtime, panel) {
   return runtime.module(
-    panelAdaptor(panel),
+    panelAdapter(panel),
     name => {
       if (name == 'panel') {
         return Inspector.into('main')()
@@ -205,7 +210,7 @@ async function panel(domain, {slug}) {
   }
 }
 
-async function brokenSanitizeAdaptor(lib) {
+async function brokenSanitizeAdapter(lib) {
 /*
   TODO: This example of an embedded notebook probably has exactly the
   example needed to integrate Observable's htl library with DOMPurify:
