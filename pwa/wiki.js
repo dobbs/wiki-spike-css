@@ -4,6 +4,34 @@ import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.0.5/+esm'
 window.addEventListener("load", async () => {
   const wiki = {}
 
+  document.addEventListener('dragstart', e => e.preventDefault())
+  document.addEventListener('dragover', e => e.preventDefault())
+  document.addEventListener('drop', async function drop(event) {
+    event.preventDefault()
+    const {files, items, types} = (event.dataTransfer||{})
+    wiki.addPanel(ghost('Drop Inspector', [{
+      type:'unknown',
+      text:'',
+      event,
+      files,
+      items,
+      types
+    }]))
+  })
+  document.addEventListener('paste', async function paste(event) {
+    event.preventDefault()
+    const {clipboardData} = event
+    const {files, items, types} = clipboardData
+    wiki.addPanel(ghost('Paste Inspector', [{
+      type:'unknown',
+      text:'',
+      event,
+      files,
+      items,
+      types
+    }]))
+  })
+
   function linked(text) {
     return text
       .replace(/\[\[(.*?)\]\]/g, (_,title) => `<a class="internal" data-title="${title}" href="#">${title}</a>`)
@@ -64,6 +92,8 @@ window.addEventListener("load", async () => {
       if (!replaceId) {
         wiki.lineup.push(panel)
         const module = panelModule(wiki.runtime, panel)
+      } else {
+        // TODO implement behavior to replace right lineup
       }
     },
     findPage({title, context=[]}) {
@@ -191,7 +221,10 @@ function ghost(title, story) {
 async function sitemap(domain) {
   try {
     const res = await fetch(`//${domain}/system/sitemap.json`)
-    return res.json()
+    return {
+      domain,
+      sitemap: res.json()
+    }
   } catch (error) {
     return {error}
   }
