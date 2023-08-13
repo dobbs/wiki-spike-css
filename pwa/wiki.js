@@ -148,6 +148,11 @@ window.addEventListener("load", async () => {
           })
           return p
         }
+      },
+      {
+        type: 'pagefold',
+        deps: ['html'],
+        fn: item => html => html`<hr class="pagefold" data-content="${item.text}">`
       }
     ],
     addPanel(panel, replaceId=null) {
