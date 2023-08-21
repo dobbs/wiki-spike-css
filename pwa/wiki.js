@@ -51,27 +51,30 @@ window.addEventListener("load", async () => {
     wiki.addPanel(panel)
   })
 
-  function linked(text) {
-    return text
-      .replace(/\[\[(.*?)\]\]/g, (_,title) => `<a class="internal" data-title="${title}" href="#">${title}</a>`)
-      .replace(/\[(https?:.*?) (.*?)\]/g, (_,url,word) => `<a href="${url.replace(/^https?:/,'')}">${word}</a>`)
-  }
-
-  function annotateLinks(el) {
-    el.querySelectorAll('a').forEach(a => {
-      if (a.classList.contains('internal')) {
-        a.onclick = event => {
-          let {title} = event.target.dataset.title
-          // TODO do the internal link thing
-        }
-      } else {
-        a.setAttribute('target', '_blank')
+  const lib = Object.assign(new Library(), {
+    async linked() {
+      return function linked(text) {
+        return text
+          .replace(/\[\[(.*?)\]\]/g, (_,title) => `<a class="internal" data-title="${title}" href="#">${title}</a>`)
+          .replace(/\[(https?:.*?) (.*?)\]/g, (_,url,word) => `<a href="${url.replace(/^https?:/,'')}">${word}</a>`)
       }
-    })
-    return el
-  }
-
-  const lib = new Library()
+    },
+    async annotateLinks() {
+      return function annotateLinks(el) {
+        el.querySelectorAll('a').forEach(a => {
+          if (a.classList.contains('internal')) {
+            a.onclick = event => {
+              let {title} = event.target.dataset.title
+              // TODO do the internal link thing
+            }
+          } else {
+            a.setAttribute('target', '_blank')
+          }
+        })
+        return el
+      }
+    }
+  })
   Object.assign(wiki, {
     runtime: new Runtime(Object.assign(lib, {
       toJSON: () => obj => JSON.stringify(obj, null, 2),
@@ -93,23 +96,23 @@ window.addEventListener("load", async () => {
       },
       {
         type: 'paragraph',
-        deps: ['html'],
-        fn: item => html => annotateLinks(html`<p>${linked(item.text)}`)
+        deps: ['html', 'linked', 'annotateLinks'],
+        fn: item => (html, linked, annotateLinks) => annotateLinks(html`<p>${linked(item.text)}`)
       },
       {
         type: 'html',
-        deps: ['html'],
-        fn: item => html => annotateLinks(html`${linked(item.text)}`)
+        deps: ['html', 'linked', 'annotateLinks'],
+        fn: item => (html, linked, annotateLinks) => annotateLinks(html`${linked(item.text)}`)
       },
       {
         type: 'markdown',
-        deps: ['md'],
-        fn: item => md => annotateLinks(md`${linked(item.text)}`)
+        deps: ['md', 'linked', 'annotateLinks'],
+        fn: item => (md, linked, annotateLinks) => annotateLinks(md`${linked(item.text)}`)
       },
       {
         type: 'reference',
-        deps: ['html'],
-        fn: item => html => {
+        deps: ['html', 'linked', 'annotateLinks'],
+        fn: item => (html, linked, annotateLinks) => {
           const {site, slug, title, text} = item
           const flag = `//${site}/favicon.png`
           const p = annotateLinks(html`
