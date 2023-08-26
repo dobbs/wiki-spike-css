@@ -1,6 +1,4 @@
 import {Runtime, Inspector, Library} from 'https://cdn.jsdelivr.net/npm/@observablehq/runtime@5.8.2/+esm'
-import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.0.5/+esm'
-
 window.addEventListener("load", async () => {
   const wiki = {}
 
@@ -51,7 +49,8 @@ window.addEventListener("load", async () => {
     wiki.addPanel(panel)
   })
 
-  const lib = Object.assign(new Library(), {
+  const stdlib = new Library()
+  const lib = Object.assign({}, stdlib, {
     async linked() {
       return function linked(text) {
         return text
@@ -73,13 +72,27 @@ window.addEventListener("load", async () => {
         })
         return el
       }
+    },
+    async html() {
+      const {default:DOMPurify} = await import('https://cdn.jsdelivr.net/npm/dompurify@3.0.5/+esm')
+      const origHtml = await stdlib.html()
+
+      function sanitize(dirty) {
+        return DOMPurify.sanitize(dirty, {
+          RETURN_DOM: true,
+          SANITIZE_DOM: false,
+          IN_PLACE: true,
+          ADD_TAGS: ['foreignObject', 'feDropShadow']
+        });
+      }
+
+      return function sanitizedTaggedTemplateLiteral(...args) {
+        return sanitize(origHtml(...args))
+      }
     }
   })
   Object.assign(wiki, {
-    runtime: new Runtime(Object.assign(lib, {
-      toJSON: () => obj => JSON.stringify(obj, null, 2),
-      //html: brokenSanitizeAdapter(lib)
-    })),
+    runtime: new Runtime(lib),
     lineup: [],
     plugins: [
       {
@@ -289,33 +302,5 @@ async function panel(domain, {slug}) {
     }
   } catch (error) {
     return {error}
-  }
-}
-
-async function brokenSanitizeAdapter(lib) {
-/*
-  TODO: This example of an embedded notebook probably has exactly the
-  example needed to integrate Observable's htl library with DOMPurify:
-  https://github.com/observablehq/examples/blob/main/custom-library/index.html
-*/
-  function sanitize(dirty) {
-    return DOMPurify.sanitize(dirty, {
-      // maybe also   RETURN_DOM: true,
-      SANITIZE_DOM: false,
-      ADD_TAGS: ['foreignObject', 'feDropShadow']
-    });
-  }
-
-  const {htl:htlPromise} = lib
-  const htl = await htlPromise()
-
-  return function sanitizedTaggedTemplateLiteral(...args) {
-    console.log({args})
-    const firstPass = htl.html(...args)
-    const html = sanitize(firstPass.outerHTML)
-    const el = htl.html`${html}`
-    // giving it back to Observable to conform with their API
-    // ends up html encoding instead of leaving the html alone. :-(
-    return el
   }
 }
