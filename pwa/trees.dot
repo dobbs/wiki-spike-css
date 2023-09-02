@@ -1,0 +1,27 @@
+digraph {
+  node [shape=box style="rounded,filled"]
+
+  subgraph cluster_1 {
+    author [shape=circle]
+
+    author -> {pseudonym1 pseudonym2 pseudonym3}
+
+    pseudonym1 -> {wiki1A wiki1B wiki1C}
+    wiki1A -> {page1A1 page1A2}
+    wiki1B -> {page1B1 page1B2}
+
+    pseudonym2 -> {wiki2A wiki2B wiki2C}
+    wiki2A -> {page2A1 page2A2}
+    wiki2B -> {page2B1 page2B2}
+  }
+
+  subgraph cluster_2 {
+    wiki -> {
+      sitemap
+      export
+      "search index"
+      "author\npseudonym"
+      "public keys\n(and change log)"
+    }
+  }
+}
