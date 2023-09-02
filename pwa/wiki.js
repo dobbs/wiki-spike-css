@@ -153,6 +153,10 @@ window.addEventListener("load", async () => {
     addPanel(panel, replaceId=null) {
       if (!replaceId) {
         wiki.lineup.push(panel)
+        const pragmas = panel.page.story.filter(item => item.text.startsWith('►'))
+        if(pragmas.length) {
+          console.log({pragmas:pragmas.map(item=>item.text)})
+        }
         const module = panelModule(wiki.runtime, panel)
       } else {
         // TODO implement behavior to replace right lineup
