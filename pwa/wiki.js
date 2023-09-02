@@ -158,6 +158,25 @@ window.addEventListener("load", async () => {
           console.log({pragmas:pragmas.map(item=>item.text)})
         }
         const module = panelModule(wiki.runtime, panel)
+        /*
+          We have coupled the next bit of code to invasive knowledge
+          about panelModule(). TODO is there a better way to do this?
+
+          We started this with:
+
+          document.querySelector('main').lastChild.scrollIntoView()
+
+          That scrolled before the new page had been rendered in the
+          DOM.
+
+          What we have now works, but it has to know that 'panel' is a
+          special variable name, that it updates the DOM as a
+          side-effect, and that it specifically adds to 'main'.
+        */
+        module.value('panel').then(panel =>
+          document.querySelector("main > *:last-of-type")
+            .scrollIntoView({behavior:'smooth'})
+        )
       } else {
         // TODO implement behavior to replace right lineup
       }
