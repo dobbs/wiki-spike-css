@@ -1,13 +1,23 @@
 digraph {
   node [shape=box style="rounded,filled"]
 
-  {node [fillcolor="palegreen"] Achieved
-    PWA SW Offline}
-  {node [fillcolor="lightblue"] Wiki
+  Anticipate [fillcolor="grey"]
+  Achieved [fillcolor="palegreen"]
+  Wiki [fillcolor="lightblue"]
+  Tool [fillcolor="bisque"]
+  Parts [fillcolor="pink"]
+
+  {node [fillcolor="palegreen"]
+    PWA SW Offline Sitemap Page}
+  {node [fillcolor="lightblue"]
     Site Frame}
-  {node [fillcolor="bisque"]    Tool
+  {node [fillcolor="bisque"]
     SWCache IndexDB}
-  {node [fillcolor="pink"]      Parts
+  {node [fillcolor="grey"]
+    Files Edit EditCode Plugins Edit
+    Publish Cache Schema choose
+  }
+  {node [fillcolor="pink"]
     item text charms}
 
   subgraph cluster_1 {
@@ -16,7 +26,9 @@ digraph {
     Wiki
     Tool
     Parts
-  } -> {PWA item} [style=invis]
+  }
+  Wiki -> {PWA Edit} [style=invis]
+
 
   PWA [label="Progressive\nWeb App (PWA)"]
   SW [label="Service\nWorker"]
@@ -24,7 +36,7 @@ digraph {
   Files [label="known files"]
   Edit [label="editor and\ndownload\npages"]
   Sitemap [label="browse one\nsitemap"]
-  Page [label="fetch\none page"]
+  Page [label="fetch\none page" fillcolor="palegreen3"]
   Publish [label="(re)publish\n(to github or glitch)"]
   Cache [label="cache all\npages"]
 
@@ -59,5 +71,4 @@ digraph {
   Files -> Offline
   PWA -> SW
   SW -> Offline
-
 }
