@@ -94,6 +94,7 @@ window.addEventListener("load", async () => {
   Object.assign(wiki, {
     runtime: new Runtime(lib),
     lineup: [],
+    modules: [],
     plugins: [
       {
         type: 'unknown',
@@ -163,6 +164,7 @@ window.addEventListener("load", async () => {
           console.log({pragmas:pragmas.map(item=>item.text)})
         }
         const module = panelModule(wiki.runtime, panel)
+        wiki.modules.push(module)
         /*
           We have coupled the next bit of code to invasive knowledge
           about panelModule(). TODO is there a better way to do this?
