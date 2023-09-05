@@ -203,25 +203,6 @@ window.addEventListener("load", async () => {
   })
 
   window.wiki = wiki
-
-  wiki.lineup =
-    [
-      'Zip',
-      'Zippity Doo Dah. Zippity Eh. My, oh my.',
-      'Hello, World!',
-      'Welcome Visitors'
-    ].map(title => ghost(title, [
-      {
-        text:"This is a paragraph. With an unexpanded [[Internal Link]]"
-      },
-      {
-        type:"markdown",
-        text:"This paragraph _has markdown_. [Markdown Link](//wiki.dbbs.co/apparatus.html)\n\n[https://wander.dbbs.co/commonplace-book.html External Link]"
-      },
-      ...(Array.from({length:Math.round(Math.random()*4)+2}, _ => ({
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      })))
-    ]))
 })
 
 function panelAdapter({id, flag, page: {title, story=[], journal=[]}}) {
