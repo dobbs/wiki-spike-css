@@ -217,7 +217,10 @@ function panelAdapter({id, flag, page: {title, story=[], journal=[]}}) {
   return function define(runtime, observer) {
     const main = runtime.module()
     // TODO main.variable(observer('twins')).define(/* ... */)
-    main.variable(observer('title')).define('title', () => title)
+    main.variable().define('width', '490px')
+    main.variable().define('title', title)
+    main.variable().define('flag', flag)
+    main.variable().define('panelId', `panel${id}`)
     for(let item of story) {
       // Using item.id to name the Observable variables. Not sure this
       // will be useful. Although id collisions are very unlikely,
@@ -234,14 +237,14 @@ function panelAdapter({id, flag, page: {title, story=[], journal=[]}}) {
       // using a global here
       let plugin = window.wiki.plugins.find(({type}) => type == item.type)
       plugin ||= window.wiki.plugins.find(({type}) => type == 'unknown')
-      main.variable(observer(`item${item.id}`))
-        .define(`item${item.id}`, plugin.deps, plugin.fn(item))
+      main.variable().define(`item${item.id}`, plugin.deps, plugin.fn(item))
     }
-    const deps = ['html', ...story.map(item => `item${item.id}`)]
+    const deps = ['html', 'title', 'flag', 'panelId', 'width',
+                  ...story.map(item => `item${item.id}`)]
     main.variable(observer('panel'))
-      .define('panel', deps, (html, ...story) => {
+      .define('panel', deps, (html, title, flag, panelId, width, ...story) => {
         return html`
-          <article id="panel${id}">
+          <article id="${panelId}">
           <div class=twins></div>
           <header><h1><img src="${flag}"> ${title}</h1></header>
           ${story}
