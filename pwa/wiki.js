@@ -2,33 +2,33 @@ import {Runtime, Inspector, Library} from 'https://cdn.jsdelivr.net/npm/@observa
 window.addEventListener("load", async () => {
   const wiki = {}
 
-  document.addEventListener('dragstart', event => event.preventDefault())
-  document.addEventListener('dragover', event => event.preventDefault())
-  document.addEventListener('drop', async function drop(event) {
-    event.preventDefault()
-    const {files, items, types} = (event.dataTransfer||{})
-    wiki.addPanel(ghost('Drop Inspector', [{
-      type:'unknown',
-      text:'',
-      event,
-      files,
-      items,
-      types
-    }]))
-  })
-  document.addEventListener('paste', async function paste(event) {
-    event.preventDefault()
-    const {clipboardData} = event
-    const {files, items, types} = clipboardData
-    wiki.addPanel(ghost('Paste Inspector', [{
-      type:'unknown',
-      text:'',
-      event,
-      files,
-      items,
-      types
-    }]))
-  })
+  // document.addEventListener('dragstart', event => event.preventDefault())
+  // document.addEventListener('dragover', event => event.preventDefault())
+  // document.addEventListener('drop', async function drop(event) {
+  //   event.preventDefault()
+  //   const {files, items, types} = (event.dataTransfer||{})
+  //   wiki.addPanel(ghost('Drop Inspector', [{
+  //     type:'unknown',
+  //     text:'',
+  //     event,
+  //     files,
+  //     items,
+  //     types
+  //   }]))
+  // })
+  // document.addEventListener('paste', async function paste(event) {
+  //   event.preventDefault()
+  //   const {clipboardData} = event
+  //   const {files, items, types} = clipboardData
+  //   wiki.addPanel(ghost('Paste Inspector', [{
+  //     type:'unknown',
+  //     text:'',
+  //     event,
+  //     files,
+  //     items,
+  //     types
+  //   }]))
+  // })
 
   document.querySelector('footer form').addEventListener('submit', async event => {
     event.preventDefault()
@@ -106,6 +106,44 @@ window.addEventListener("load", async () => {
           inspector.fulfilled(item)
           div.prepend(html`<p><em>Unknown type:</em> ${item.type}`)
           return div
+        }
+      },
+      {
+        type: 'editor',
+        deps: ['html'],
+        fn: (item, html) => {
+          const editor = html`
+          <div>
+            <button>Show Results</button>
+            <select>
+              ${wiki.plugins.map(p => html`<option value="${p.type}">${p.type}</option>`)}
+            </select>
+            <textarea rows="12" style="width:100%;">${item.text}</textarea>
+          </div>`
+          editor.dataset.id = `item${item.id}`
+          editor.value = {
+            id: `item${wiki.randomId()}`,
+            type: wiki.plugins[0].type,
+            text: item.text
+          }
+          editor.querySelector('select').addEventListener('change', event => {
+            editor.value = {...editor.value, type: event.target.value}
+            editor.dispatchEvent(new Event('input'))
+          })
+          editor.querySelector('textarea').addEventListener('input', event => {
+            editor.value = {...editor.value, text: event.currentTarget.value}
+          })
+          editor.querySelector('button').addEventListener('click', event => {
+            const panelId = event.target.closest('article').getAttribute('id')
+            const panel = wiki.ghost('Results', [{
+              ...editor.value,
+              observe: {panelId, itemId: `item${item.id}`}
+            }])
+            //TODO viewer is not the right name
+            panel.notebook = 'viewer'
+            wiki.addPanel(panel)
+          })
+          return editor
         }
       },
       {
@@ -204,6 +242,73 @@ window.addEventListener("load", async () => {
     panel
   })
 
+  const notebooks = [
+    {
+      notebook: 'page',
+      fn: panelAdapter
+    },
+    {
+      notebook: 'viewer',
+      fn({id, flag, page: {title, story=[], journal=[]}}) {
+        return function define(runtime, observer) {
+          const main = runtime.module()
+          // TODO main.variable(observer('twins')).define(/* ... */)
+
+          const {panelId, itemId} = story[0].observe
+          const idx = wiki.lineup.findIndex(p => `panel${p.id}` == panelId)
+          main.import(itemId, 'item', wiki.modules[idx])
+          main.variable().define(
+            'plugin',
+            ['item'],
+            (item) => wiki.plugins.find(({type}) => type == item.type)
+          )
+
+          // result: initialize with empty div so it exists
+          main.variable().define('result', ['html'], html => html`<div>`)
+          // result: redefined by this anonymous variable when plugin changes
+          main.variable(true).define(
+            ['plugin'],
+            plugin => {
+              main.redefine('result', ['item', ...plugin.deps], plugin.fn)
+            }
+          )
+
+          main.variable().define('width', '490px')
+          main.variable().define('title', title)
+          main.variable().define('flag', flag)
+          main.variable().define('panelId', `panel${id}`)
+
+          // TODO for(let edit of journal) {/*...*/}
+          main.variable(observer('panel')).define(
+            'panel',
+            ['html', 'width', 'title', 'flag', 'panelId', 'result'],
+            (html, width, title, flag, panelId, result) => html`
+            <article id="${panelId}">
+            <div class=twins></div>
+            <header><h1><img src="${flag}"> ${title}</h1></header>
+            ${result}
+            <footer></footer>
+            </article>`
+          )
+        }
+      }
+    }
+  ]
+
+  function panelModule(runtime, panel) {
+    const {notebook='page'} = panel
+    const adapter = notebooks.find(nb => nb.notebook == notebook).fn
+    return runtime.module(
+      adapter(panel),
+      name => {
+        if (name == 'panel') {
+          return Inspector.into('main')()
+        }
+        return null
+      }
+    )
+  }
+
   window.wiki = wiki
 })
 
@@ -238,8 +343,10 @@ function panelAdapter({id, flag, page: {title, story=[], journal=[]}}) {
       let plugin = window.wiki.plugins.find(({type}) => type == item.type)
       plugin ||= window.wiki.plugins.find(({type}) => type == 'unknown')
       const itemId = `item${item.id}`
-      main.variable().define(`viewof ${itemId}`, [itemId, ...plugin.deps], plugin.fn)
-      main.variable().define(itemId, item)
+      main.variable().define(`boot${item.id}`, () => item)
+      main.variable().define(`viewof ${itemId}`, [`boot${item.id}`, ...plugin.deps], plugin.fn)
+      main.variable()
+        .define(itemId, ['Generators', `viewof ${itemId}`], (G, el) => G.input(el))
     }
     const deps = ['html', 'title', 'flag', 'panelId', 'width',
                   ...story.map(item => `viewof item${item.id}`)]
@@ -255,18 +362,6 @@ function panelAdapter({id, flag, page: {title, story=[], journal=[]}}) {
       })
     // TODO for(let edit of journal) {/*...*/}
   }
-}
-
-function panelModule(runtime, panel) {
-  return runtime.module(
-    panelAdapter(panel),
-    name => {
-      if (name == 'panel') {
-        return Inspector.into('main')()
-      }
-      return null
-    }
-  )
 }
 
 function randomId() {
