@@ -99,7 +99,7 @@ window.addEventListener("load", async () => {
       {
         type: 'unknown',
         deps: ['html'],
-        fn: item => (html) => {
+        fn: (item, html) => {
           const div = document.createElement('div')
           div.classList.add('item', 'unknown')
           const inspector = new Inspector(div)
@@ -111,22 +111,22 @@ window.addEventListener("load", async () => {
       {
         type: 'paragraph',
         deps: ['html', 'linked', 'annotateLinks'],
-        fn: item => (html, linked, annotateLinks) => annotateLinks(html`<p>${linked(item.text)}`)
+        fn: (item, html, linked, annotateLinks) => annotateLinks(html`<p>${linked(item.text)}`)
       },
       {
         type: 'html',
         deps: ['html', 'linked', 'annotateLinks'],
-        fn: item => (html, linked, annotateLinks) => annotateLinks(html`${linked(item.text)}`)
+        fn: (item, html, linked, annotateLinks) => annotateLinks(html`${linked(item.text)}`)
       },
       {
         type: 'markdown',
         deps: ['md', 'linked', 'annotateLinks'],
-        fn: item => (md, linked, annotateLinks) => annotateLinks(md`${linked(item.text)}`)
+        fn: (item, md, linked, annotateLinks) => annotateLinks(md`${linked(item.text)}`)
       },
       {
         type: 'reference',
         deps: ['html', 'linked', 'annotateLinks'],
-        fn: item => (html, linked, annotateLinks) => {
+        fn: (item, html, linked, annotateLinks) => {
           const {site, slug, title, text} = item
           const flag = `//${site}/favicon.png`
           const p = annotateLinks(html`
@@ -153,7 +153,7 @@ window.addEventListener("load", async () => {
       {
         type: 'pagefold',
         deps: ['html'],
-        fn: item => html => html`<hr class="pagefold" data-content="${item.text}">`
+        fn: (item, html) => html`<hr class="pagefold" data-content="${item.text}">`
       }
     ],
     addPanel(panel, replaceId=null) {
@@ -237,10 +237,12 @@ function panelAdapter({id, flag, page: {title, story=[], journal=[]}}) {
       // using a global here
       let plugin = window.wiki.plugins.find(({type}) => type == item.type)
       plugin ||= window.wiki.plugins.find(({type}) => type == 'unknown')
-      main.variable().define(`item${item.id}`, plugin.deps, plugin.fn(item))
+      const itemId = `item${item.id}`
+      main.variable().define(`viewof ${itemId}`, [itemId, ...plugin.deps], plugin.fn)
+      main.variable().define(itemId, item)
     }
     const deps = ['html', 'title', 'flag', 'panelId', 'width',
-                  ...story.map(item => `item${item.id}`)]
+                  ...story.map(item => `viewof item${item.id}`)]
     main.variable(observer('panel'))
       .define('panel', deps, (html, title, flag, panelId, width, ...story) => {
         return html`
