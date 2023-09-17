@@ -32,10 +32,16 @@ window.addEventListener("load", async () => {
 
   document.querySelector('footer form').addEventListener('submit', async event => {
     event.preventDefault()
+    const article = event.target.closest('article')
+    const keepLineup = true
     if (event.submitter.name == 'menu') {
       event.stopPropagation()
       event.stopImmediatePropagation()
-      wiki.addPanel(wiki.ghost('Explore Code', [{type:'editor', text:'almost blank'}]))
+      wiki.addPanel(
+        wiki.ghost('Explore Code', [{type:'editor', text:'almost blank'}]),
+        article,
+        keepLineup
+      )
       return
     }
     const site = await wiki.sitemap(new FormData(event.target).get('domain'))
@@ -52,7 +58,7 @@ window.addEventListener("load", async () => {
           text: synopsis
         })))
     panel.flag = `//${domain}/favicon.png`
-    wiki.addPanel(panel)
+    wiki.addPanel(panel, article, keepLineup)
   })
 
   const stdlib = new Library()
@@ -140,14 +146,16 @@ window.addEventListener("load", async () => {
             editor.value = {...editor.value, text: event.currentTarget.value}
           })
           editor.querySelector('button').addEventListener('click', event => {
-            const panelId = event.target.closest('article').getAttribute('id')
+            const article = event.target.closest('article')
+            const keepLineup = event.shiftKey
+            const panelId = article.getAttribute('id')
             const panel = wiki.ghost('Preview', [{
               ...editor.value,
               observe: {panelId, itemId: `item${item.id}`}
             }])
             //TODO viewer is not the right name
             panel.notebook = 'viewer'
-            wiki.addPanel(panel)
+            wiki.addPanel(panel, article, keepLineup)
           })
           return editor
         }
@@ -180,19 +188,17 @@ window.addEventListener("load", async () => {
 
           p.querySelector('a[data-title]').addEventListener('click', async (event) => {
             event.preventDefault()
-            let replaceId
-            if (!event.shiftKey) {
-              replaceId = event.target.closest('article').getAttribute('id')
-            }
+            const article = event.target.closest('article')
+            const keepLineup = event.shiftKey
             try {
               const res = await fetch(`//${site}/${slug}.json`)
               let page =  await res.json()
-              wiki.addPanel({id: randomId(), flag, page}, replaceId)
+              wiki.addPanel({id: randomId(), flag, page}, article, keepLineup)
             } catch(error) {
               wiki.addPanel(ghost(title, [{
                 type: 'unknown',
                 text: 'create this page'
-              }]), replaceId)
+              }]), article, keepLineup)
             }
           })
           return p
@@ -204,18 +210,14 @@ window.addEventListener("load", async () => {
         fn: (item, html) => html`<hr class="pagefold" data-content="${item.text}">`
       }
     ],
-    addPanel(panel, replaceId=null) {
-      if (replaceId != null) {
-        const idx = wiki.lineup.findIndex(panel => `panel${panel.id}` == replaceId)
-        const {lineup:origlineup, modules:origmodules} = wiki
-        const lineup = origlineup.toSpliced(idx)
-        const modules = origmodules.toSpliced(idx)
-        const stopEl = document.querySelector(`#${replaceId}`)
+    addPanel(panel, article, keepLineup=false) {
+      if (!!keepLineup == false) {
         const mainEl = document.querySelector('main')
-        for (let i = origlineup.length-1; i > idx; i--) {
+        while (mainEl.lastChild && mainEl.lastChild.firstChild != article) {
+          wiki.lineup.pop()
+          wiki.modules.pop()
           mainEl.lastChild.remove()
         }
-        Object.assign(wiki, {lineup, modules})
       }
         wiki.lineup.push(panel)
         const pragmas = panel.page.story.filter(item => item.text.startsWith('►'))
