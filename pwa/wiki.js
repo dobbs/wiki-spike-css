@@ -32,6 +32,13 @@ window.addEventListener("load", async () => {
 
   document.querySelector('footer form').addEventListener('submit', async event => {
     event.preventDefault()
+    if (event.submitter.name == 'menu') {
+      event.stopPropagation()
+      event.stopImmediatePropagation()
+      console.log({event})
+      wiki.addPanel(wiki.ghost('Explore Code', [{type:'editor', text:'almost blank'}]))
+      return
+    }
     const site = await wiki.sitemap(new FormData(event.target).get('domain'))
     const {domain, sitemap} = site
     const panel = ghost(
@@ -114,7 +121,7 @@ window.addEventListener("load", async () => {
         fn: (item, html) => {
           const editor = html`
           <div>
-            <button>Show Results</button>
+            <button>Show Preview</button>
             <select>
               ${wiki.plugins.map(p => html`<option value="${p.type}">${p.type}</option>`)}
             </select>
@@ -135,7 +142,7 @@ window.addEventListener("load", async () => {
           })
           editor.querySelector('button').addEventListener('click', event => {
             const panelId = event.target.closest('article').getAttribute('id')
-            const panel = wiki.ghost('Results', [{
+            const panel = wiki.ghost('Preview', [{
               ...editor.value,
               observe: {panelId, itemId: `item${item.id}`}
             }])
@@ -263,13 +270,15 @@ window.addEventListener("load", async () => {
             (item) => wiki.plugins.find(({type}) => type == item.type)
           )
 
-          // result: initialize with empty div so it exists
-          main.variable().define('result', ['html'], html => html`<div>`)
-          // result: redefined by this anonymous variable when plugin changes
+          // initialize preview with an empty div so it exists before
+          // we have to redefine it when the author changes the editor
+          main.variable().define('preview', ['html'], html => html`<div>`)
+          // anonymous variable subscribes to changes in 'plugin' and
+          // redefines 'preview' accordingly
           main.variable(true).define(
             ['plugin'],
-            plugin => {
-              main.redefine('result', ['item', ...plugin.deps], plugin.fn)
+            async plugin => {
+              main.redefine('preview', ['item', ...plugin.deps], plugin.fn)
             }
           )
 
@@ -281,12 +290,12 @@ window.addEventListener("load", async () => {
           // TODO for(let edit of journal) {/*...*/}
           main.variable(observer('panel')).define(
             'panel',
-            ['html', 'width', 'title', 'flag', 'panelId', 'result'],
-            (html, width, title, flag, panelId, result) => html`
+            ['html', 'width', 'title', 'flag', 'panelId', 'preview'],
+            (html, width, title, flag, panelId, preview) => html`
             <article id="${panelId}">
             <div class=twins></div>
             <header><h1><img src="${flag}"> ${title}</h1></header>
-            ${result}
+            ${preview}
             <footer></footer>
             </article>`
           )
