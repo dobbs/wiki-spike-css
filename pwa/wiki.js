@@ -35,7 +35,6 @@ window.addEventListener("load", async () => {
     if (event.submitter.name == 'menu') {
       event.stopPropagation()
       event.stopImmediatePropagation()
-      console.log({event})
       wiki.addPanel(wiki.ghost('Explore Code', [{type:'editor', text:'almost blank'}]))
       return
     }
@@ -181,15 +180,19 @@ window.addEventListener("load", async () => {
 
           p.querySelector('a[data-title]').addEventListener('click', async (event) => {
             event.preventDefault()
+            let replaceId
+            if (!event.shiftKey) {
+              replaceId = event.target.closest('article').getAttribute('id')
+            }
             try {
               const res = await fetch(`//${site}/${slug}.json`)
               let page =  await res.json()
-              wiki.addPanel({id: randomId(), flag, page})
+              wiki.addPanel({id: randomId(), flag, page}, replaceId)
             } catch(error) {
               wiki.addPanel(ghost(title, [{
                 type: 'unknown',
                 text: 'create this page'
-              }]))
+              }]), replaceId)
             }
           })
           return p
@@ -202,7 +205,18 @@ window.addEventListener("load", async () => {
       }
     ],
     addPanel(panel, replaceId=null) {
-      if (!replaceId) {
+      if (replaceId != null) {
+        const idx = wiki.lineup.findIndex(panel => `panel${panel.id}` == replaceId)
+        const {lineup:origlineup, modules:origmodules} = wiki
+        const lineup = origlineup.toSpliced(idx)
+        const modules = origmodules.toSpliced(idx)
+        const stopEl = document.querySelector(`#${replaceId}`)
+        const mainEl = document.querySelector('main')
+        for (let i = origlineup.length-1; i > idx; i--) {
+          mainEl.lastChild.remove()
+        }
+        Object.assign(wiki, {lineup, modules})
+      }
         wiki.lineup.push(panel)
         const pragmas = panel.page.story.filter(item => item.text.startsWith('►'))
         if(pragmas.length) {
@@ -229,9 +243,6 @@ window.addEventListener("load", async () => {
           document.querySelector("main > *:last-of-type")
             .scrollIntoView({behavior:'smooth'})
         )
-      } else {
-        // TODO implement behavior to replace right lineup
-      }
     },
     findPage({title, context=[]}) {
       for(let siteMap of context) {
