@@ -72,7 +72,9 @@ article {
   margin: var(--gutter);
   white-space: normal;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
 }
 
 /* page typeface, color, and white space */
