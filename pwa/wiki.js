@@ -57,6 +57,7 @@ window.addEventListener("load", async () => {
           title,
           text: synopsis
         })))
+    panel.host = domain
     panel.flag = `//${domain}/favicon.png`
     wiki.addPanel(panel, article, keepLineup)
   })
@@ -74,9 +75,34 @@ window.addEventListener("load", async () => {
       return function annotateLinks(el) {
         el.querySelectorAll('a').forEach(a => {
           if (a.classList.contains('internal')) {
-            a.onclick = event => {
-              let {title} = event.target.dataset.title
-              // TODO do the internal link thing
+            a.onclick = async event => {
+              event.preventDefault()
+              // click could be on text in SVG, so look for closest 'a'
+              const { title } =  event.target.closest('a').dataset
+              
+              const panel = event.target.closest('article')
+              const panelId = panel.id.substr(5)
+              const currentPanel = wiki.lineup.find((element) => element.id == panelId)
+              const currentPage = currentPanel.page
+              const pageHost = currentPanel.host
+              // might be useful to have the item id, but not currently available!
+              const localContext = extractPageContext( pageHost, currentPage )
+              const { site, slug } = await wiki.findpage({ title, context: localContext })
+              console.log('*** internal link - found?', site, slug)
+              const article = event.target.closest('article')
+              const keepLineup = event.shiftKey
+              const flag = `//${site}/favicon.png`
+              try {
+                const res = await fetch(`//${site}/${slug}.json`)
+                console.log('*** internal link', res)
+                let page =  await res.json()
+                wiki.addPanel({id: randomId(), host: site, flag, page}, article, keepLineup)
+              } catch(error) {
+                wiki.addPanel(ghost(title, [{
+                  type: 'unknown',
+                  text: 'create this page'
+                }]), article, keepLineup)
+              }
             }
           } else {
             a.setAttribute('target', '_blank')
@@ -185,7 +211,8 @@ window.addEventListener("load", async () => {
           <p><img class="remote" src="${flag}">
             <a class="internal" data-title="${title}"
                href="//${site}/${slug}.html">${title}</a> - ${linked(text)}`)
-
+          // remove the onclick from annotateLinks() before adding our own click handler.
+          p.querySelector('a[data-title]').onclick = null
           p.querySelector('a[data-title]').addEventListener('click', async (event) => {
             event.preventDefault()
             const article = event.target.closest('article')
@@ -193,7 +220,7 @@ window.addEventListener("load", async () => {
             try {
               const res = await fetch(`//${site}/${slug}.json`)
               let page =  await res.json()
-              wiki.addPanel({id: randomId(), flag, page}, article, keepLineup)
+              wiki.addPanel({id: randomId(), host: site, flag, page}, article, keepLineup)
             } catch(error) {
               wiki.addPanel(ghost(title, [{
                 type: 'unknown',
@@ -246,19 +273,11 @@ window.addEventListener("load", async () => {
             .scrollIntoView({behavior:'smooth'})
         )
     },
-    findPage({title, context=[]}) {
-      for(let siteMap of context) {
-        for(let page of Object.values(siteMap)) {
-          if (page.title.toLowerCase() == title.toLowerCase()) {
-            return page
-          }
-        }
-      }
-      return {}
-    },
+    findpage,
     ghost,
     randomId,
     sitemap,
+    sitemaps: new Map(),
     panel
   })
 
@@ -269,7 +288,7 @@ window.addEventListener("load", async () => {
     },
     {
       notebook: 'viewer',
-      fn({id, flag, page: {title, story=[], journal=[]}}) {
+      fn({id, host, flag, page: {title, story=[], journal=[]}}) {
         return function define(runtime, observer) {
           const main = runtime.module()
           // TODO main.variable(observer('twins')).define(/* ... */)
@@ -334,7 +353,7 @@ window.addEventListener("load", async () => {
   window.wiki = wiki
 })
 
-function panelAdapter({id, flag, page: {title, story=[], journal=[]}}) {
+function panelAdapter({id, host, flag, page: {title, story=[], journal=[]}}) {
   // TODO panelAdapter() is not the right name--keep having to ask
   // what this thing does. It is an adapter which adapts a wiki panel
   // into an Observable module definition. But the name on the outside
@@ -414,15 +433,34 @@ function ghost(title, story) {
 }
 
 async function sitemap(domain) {
-  try {
-    const res = await fetch(`//${domain}/system/sitemap.json`)
-    return {
-      domain,
-      sitemap: await res.json()
-    }
-  } catch (error) {
-    return {error}
+  if (wiki.sitemaps.has(domain)) {
+    return { domain, sitemap: wiki.sitemaps.get(domain).sitemap}
   }
+  return await fetch(`//${domain}/system/sitemap.json`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(response.status)
+      }
+      return res.json()
+    })
+    .then((json) => {
+      wiki.sitemaps.set(domain, { sitemap: json })
+      return { domain, sitemap: json }
+    })
+    .catch((error) => {
+      return { error }
+    })
+}
+
+async function findpage({title, context=[]}) {
+  for (let site of context) {
+    const siteMap = (await wiki.sitemap(site)).sitemap
+    const found = siteMap[siteMap.findIndex(e => e.title.toLowerCase() == title.toLowerCase())]
+    if (found) {
+      return { site, slug: found.slug }
+    }
+  }
+  return {}
 }
 
 async function panel(domain, {slug}) {
@@ -436,4 +474,8 @@ async function panel(domain, {slug}) {
   } catch (error) {
     return {error}
   }
+}
+
+function extractPageContext(host, page) {
+  return [...new Set([ host, ...page.journal.filter(i => i.site || i.attribution?.site).map(i => i.attribution?.site || i.site).reverse()])] 
 }
