@@ -220,7 +220,7 @@ window.addEventListener("load", async () => {
         }
       }
         wiki.lineup.push(panel)
-        const pragmas = panel.page.story.filter(item => item.text.startsWith('►'))
+        const pragmas = panel.page.story.filter(item => item.text?.startsWith('►'))
         if(pragmas.length) {
           console.log({pragmas:pragmas.map(item=>item.text)})
         }
