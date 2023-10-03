@@ -80,29 +80,19 @@ window.addEventListener("load", async () => {
               // click could be on text in SVG, so look for closest 'a'
               const { title } =  event.target.closest('a').dataset
               
+              const keepLineup = event.shiftKey
+              // find the id of the panel clicked in
               const panel = event.target.closest('article')
               const panelId = panel.id.substr(5)
+              // retrieve the page from the lineup
               const currentPanel = wiki.lineup.find((element) => element.id == panelId)
-              const currentPage = currentPanel.page
-              const pageHost = currentPanel.host
-              // might be useful to have the item id, but not currently available!
-              const localContext = extractPageContext( pageHost, currentPage )
-              const { site, slug } = await wiki.findpage({ title, context: localContext })
+              // search of page title within the current page's context
+              const { site, slug } = await wiki.findpage({ title, context: currentPanel.context })
               console.log('*** internal link - found?', site, slug)
-              const article = event.target.closest('article')
-              const keepLineup = event.shiftKey
-              const flag = `//${site}/favicon.png`
-              try {
-                const res = await fetch(`//${site}/${slug}.json`)
-                console.log('*** internal link', res)
-                let page =  await res.json()
-                wiki.addPanel({id: randomId(), host: site, flag, page}, article, keepLineup)
-              } catch(error) {
-                wiki.addPanel(ghost(title, [{
-                  type: 'unknown',
-                  text: 'create this page'
-                }]), article, keepLineup)
-              }
+
+              // add panel to the lineup
+              // - 
+              wiki.addPanel(await wiki.panel(site, { title, slug }), panel, keepLineup)
             }
           } else {
             a.setAttribute('target', '_blank')
@@ -207,6 +197,7 @@ window.addEventListener("load", async () => {
         fn: (item, html, linked, annotateLinks) => {
           const {site, slug, title, text} = item
           const flag = `//${site}/favicon.png`
+          // how links within a reference are annotated needs some thought!
           const p = annotateLinks(html`
           <p><img class="remote" src="${flag}">
             <a class="internal" data-title="${title}"
@@ -215,18 +206,10 @@ window.addEventListener("load", async () => {
           p.querySelector('a[data-title]').onclick = null
           p.querySelector('a[data-title]').addEventListener('click', async (event) => {
             event.preventDefault()
-            const article = event.target.closest('article')
+            const panel = event.target.closest('article')
             const keepLineup = event.shiftKey
-            try {
-              const res = await fetch(`//${site}/${slug}.json`)
-              let page =  await res.json()
-              wiki.addPanel({id: randomId(), host: site, flag, page}, article, keepLineup)
-            } catch(error) {
-              wiki.addPanel(ghost(title, [{
-                type: 'unknown',
-                text: 'create this page'
-              }]), article, keepLineup)
-            }
+
+            wiki.addPanel(await wiki.panel(site, { title, slug }), panel, keepLineup)
           })
           return p
         }
@@ -247,7 +230,7 @@ window.addEventListener("load", async () => {
         }
       }
         wiki.lineup.push(panel)
-        const pragmas = panel.page.story.filter(item => item.text.startsWith('►'))
+        const pragmas = panel.page.story.filter(item => item.text?.startsWith('►'))
         if(pragmas.length) {
           console.log({pragmas:pragmas.map(item=>item.text)})
         }
@@ -439,7 +422,7 @@ async function sitemap(domain) {
   return await fetch(`//${domain}/system/sitemap.json`)
     .then((res) => {
       if (!res.ok) {
-        throw new Error(response.status)
+        throw new Error(res.status)
       }
       return res.json()
     })
@@ -463,19 +446,41 @@ async function findpage({title, context=[]}) {
   return {}
 }
 
-async function panel(domain, {slug}) {
-  try {
-    const res = await fetch(`//${domain}/${slug}.json`)
-    return {
-      id: randomId(),
-      flag: `//${domain}/favicon.png`,
-      page: await res.json()
-    }
-  } catch (error) {
-    return {error}
+async function panel(domain, { title, slug }) {
+  console.log('*** panel() ***', domain, title, slug)
+  if (!domain || !title || !slug ) {
+    // if page isn't found, then domain will be undefined,
+    // as will slug be.
+    return ghost(title||'Unknown Page', [{
+      type: 'unknown',
+      text: 'No idea where this page it!\nCreate this page.'
+    }])
   }
+
+  return await fetch(`//${domain}/${slug}.json`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.status)
+      }
+      return res.json()
+    })
+    .then((page) => {
+      return {
+        id: randomId(),
+        host: domain,
+        flag: `//${domain}/favicon.png`,
+        page,
+        context: pageContext( domain, page )
+      }
+    })
+    .catch((error) => {
+      return ghost(title, [{
+        type: 'unknown',
+        text: `Error while reading this page ${error}.\nCreate this page.`
+      }])
+    })
 }
 
-function extractPageContext(host, page) {
+function pageContext(host, page) {
   return [...new Set([ host, ...page.journal.filter(i => i.site || i.attribution?.site).map(i => i.attribution?.site || i.site).reverse()])] 
 }
