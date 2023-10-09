@@ -87,9 +87,10 @@ window.addEventListener("load", async () => {
               // retrieve the page from the lineup
               const currentPanel = wiki.lineup.find((element) => element.id == panelId)
               // search of page title within the current page's context
-              const { site, slug } = await wiki.findpage({ title, context: currentPanel.context })
-              console.log('*** internal link - found?', site, slug)
-
+              // TODO: does this item have any item specific context?
+              //         is it a reference or item with attribution?
+              // QUESTION: How to get the item id, so we can search of item context
+              const { site, slug } = await wiki.findpage({ title, context: currentPanel.context.page })
               // add panel to the lineup
               // - 
               wiki.addPanel(await wiki.panel(site, { title, slug }), panel, keepLineup)
@@ -447,7 +448,6 @@ async function findpage({title, context=[]}) {
 }
 
 async function panel(domain, { title, slug }) {
-  console.log('*** panel() ***', domain, title, slug)
   if (!domain || !title || !slug ) {
     // if page isn't found, then domain will be undefined,
     // as will slug be.
@@ -470,7 +470,7 @@ async function panel(domain, { title, slug }) {
         host: domain,
         flag: `//${domain}/favicon.png`,
         page,
-        context: pageContext( domain, page )
+        context: extractContext( domain, page )
       }
     })
     .catch((error) => {
@@ -481,6 +481,15 @@ async function panel(domain, { title, slug }) {
     })
 }
 
-function pageContext(host, page) {
-  return [...new Set([ host, ...page.journal.filter(i => i.site || i.attribution?.site).map(i => i.attribution?.site || i.site).reverse()])] 
+function extractContext(host, page) {
+  // A page's context has two parts,
+  // * the pages fork history
+  // * individual item history created by being included from elswwhere
+  const storyItems = page.story.map(i => i.id)
+  return {
+    page: [...new Set([ host, ...page.journal.filter(i => i.site).map(i => i.site).reverse()])],
+    item: page.journal.filter(i => i.attribution?.site).filter(i => storyItems.includes(i.id))
+                      .map(i => ({ id: i.id, site: i.attribution?.site }))
+                      .reduce((o,i) => ({ ...o, [i.id]: { site: i.site } }), {})
+  }
 }
