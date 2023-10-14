@@ -89,7 +89,7 @@ window.addEventListener("load", async () => {
               // search of page title within the current page's context
               // TODO: does this item have any item specific context?
               //         is it a reference or item with attribution?
-              // QUESTION: How to get the item id, so we can search of item context
+              // QUESTION: How to get the item id, so we can add item context
               const { site, slug } = await wiki.findpage({ title, context: currentPanel.context.page })
               // add panel to the lineup
               // - 
