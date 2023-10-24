@@ -85,6 +85,7 @@ window.addEventListener("load", async () => {
               const panel = event.target.closest('article')
               const panelId = panel.id.substr(5)
               // retrieve the page from the lineup
+              // TODO: Do we do it this way, or use Observable variables
               const currentPanel = wiki.lineup.find((element) => element.id == panelId)
               // search of page title within the current page's context
               // TODO: does this item have any item specific context?
@@ -222,6 +223,7 @@ window.addEventListener("load", async () => {
       }
     ],
     addPanel(panel, article, keepLineup=false) {
+      // TODO: If removing panels we need to also remove the associated Observable variables.
       if (!!keepLineup == false) {
         const mainEl = document.querySelector('main')
         while (mainEl.lastChild && mainEl.lastChild.firstChild != article) {
@@ -304,6 +306,10 @@ window.addEventListener("load", async () => {
           main.variable().define('panelId', `panel${id}`)
 
           // TODO for(let edit of journal) {/*...*/}
+
+          // QUESTION: Do we save the context as a variable, 
+          //      rather than as part of a panel in wiki.lineup ?
+
           main.variable(observer('panel')).define(
             'panel',
             ['html', 'width', 'title', 'flag', 'panelId', 'preview'],
@@ -465,6 +471,8 @@ async function panel(domain, { title, slug }) {
       return res.json()
     })
     .then((page) => {
+      // QUESTION: This does not seem like the right place to store the context! 
+      //    Use Observable variable instead?
       return {
         id: randomId(),
         host: domain,
@@ -482,6 +490,7 @@ async function panel(domain, { title, slug }) {
 }
 
 function extractContext(host, page) {
+  // QUESTION: Do we do context like this, or use Observable variables?
   // A page's context has two parts,
   // * the pages fork history
   // * individual item history created by being included from elswwhere
