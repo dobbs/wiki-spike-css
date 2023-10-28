@@ -391,6 +391,7 @@ function panelAdapter({id, host, flag, page: {title, story=[], journal=[]}}) {
           <footer></footer>
           </article>`
       })
+    console.log('panelAdapter', { id, main })
     // TODO for(let edit of journal) {/*...*/}
   }
 }
