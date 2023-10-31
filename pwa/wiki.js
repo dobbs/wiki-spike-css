@@ -131,7 +131,7 @@ window.addEventListener("load", async () => {
         deps: ['html'],
         fn: (item, html) => {
           const div = document.createElement('div')
-          div.classList.add('item', 'unknown')
+          div.classList.add('item', 'unknown', item.id)
           const inspector = new Inspector(div)
           inspector.fulfilled(item)
           div.prepend(html`<p><em>Unknown type:</em> ${item.type}`)
@@ -181,17 +181,17 @@ window.addEventListener("load", async () => {
       {
         type: 'paragraph',
         deps: ['html', 'linked', 'annotateLinks'],
-        fn: (item, html, linked, annotateLinks) => annotateLinks(html`<p>${linked(item.text)}`)
+        fn: (item, html, linked, annotateLinks) => annotateLinks(html`<div class='item ${item.id}'><p>${linked(item.text)}`)
       },
       {
         type: 'html',
         deps: ['html', 'linked', 'annotateLinks'],
-        fn: (item, html, linked, annotateLinks) => annotateLinks(html`${linked(item.text)}`)
+        fn: (item, html, linked, annotateLinks) => annotateLinks(html`<div class='item ${item.id}'>${linked(item.text)}`)
       },
       {
         type: 'markdown',
         deps: ['md', 'linked', 'annotateLinks'],
-        fn: (item, md, linked, annotateLinks) => annotateLinks(md`${linked(item.text)}`)
+        fn: (item, md, linked, annotateLinks) => annotateLinks(md`<div class='item ${item.id}'>${linked(item.text)}`)
       },
       {
         type: 'reference',
@@ -201,7 +201,7 @@ window.addEventListener("load", async () => {
           const flag = `//${site}/favicon.png`
           // how links within a reference are annotated needs some thought!
           const p = annotateLinks(html`
-          <p><img class="remote" src="${flag}">
+          <div class='item ${item.id}'><p><img class="remote" src="${flag}">
             <a class="internal" data-title="${title}"
                href="//${site}/${slug}.html">${title}</a> - ${linked(text)}`)
           // remove the onclick from annotateLinks() before adding our own click handler.
@@ -219,7 +219,7 @@ window.addEventListener("load", async () => {
       {
         type: 'pagefold',
         deps: ['html'],
-        fn: (item, html) => html`<hr class="pagefold" data-content="${item.text}">`
+        fn: (item, html) => html`<div class='item ${item.id}'><hr class="pagefold" data-content="${item.text}">`
       }
     ],
     addPanel(panel, article, keepLineup=false) {
