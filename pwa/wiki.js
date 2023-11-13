@@ -88,10 +88,9 @@ window.addEventListener("load", async () => {
               // TODO: Do we do it this way, or use Observable variables
               const currentPanel = wiki.lineup.find((element) => element.id == panelId)
               // search of page title within the current page's context
-              // TODO: does this item have any item specific context?
-              //         is it a reference or item with attribution?
-              // QUESTION: How to get the item id, so we can add item context
-              const { site, slug } = await wiki.findpage({ title, context: currentPanel.context.page })
+              const itemId = [...event.target.closest('.item').classList].filter(i => i != 'item')[0]
+              console.log('*** onClick (internal link', {event, currentPanel, itemId})
+              const { site, slug } = await wiki.findpage({ title, itemId, context: currentPanel.context })
               // add panel to the lineup
               // - 
               wiki.addPanel(await wiki.panel(site, { title, slug }), panel, keepLineup)
@@ -307,8 +306,10 @@ window.addEventListener("load", async () => {
 
           // TODO for(let edit of journal) {/*...*/}
 
-          // QUESTION: Do we save the context as a variable, 
-          //      rather than as part of a panel in wiki.lineup ?
+          // QUESTION: How best to handle the resolution context? 
+          //      rather than as part of a panel in wiki.lineup,
+          //      should it be something that is passed into this
+          //      observer? Is it here, or in panelAdapter(), or both places?
 
           main.variable(observer('panel')).define(
             'panel',
@@ -357,6 +358,13 @@ function panelAdapter({id, host, flag, page: {title, story=[], journal=[]}}) {
     main.variable().define('title', title)
     main.variable().define('flag', flag)
     main.variable().define('panelId', `panel${id}`)
+
+    // QUESTION: How best to handle the resolution context? 
+    //      rather than as part of a panel in wiki.lineup,
+    //      should it be something that is passed into this
+    //      observer?
+    //    Is it something that belongs here, or elsewhere?
+
     for(let item of story) {
       // Using item.id to name the Observable variables. Not sure this
       // will be useful. Although id collisions are very unlikely,
@@ -391,7 +399,6 @@ function panelAdapter({id, host, flag, page: {title, story=[], journal=[]}}) {
           <footer></footer>
           </article>`
       })
-    console.log('panelAdapter', { id, main })
     // TODO for(let edit of journal) {/*...*/}
   }
 }
@@ -443,8 +450,11 @@ async function sitemap(domain) {
     })
 }
 
-async function findpage({title, context=[]}) {
-  for (let site of context) {
+async function findpage({title, itemId='', context={page: [], item: {}}}) {
+  const thisContext = (itemId && Object.hasOwn(context.item, itemId)) ?
+    context.page.toSpliced(1, 0, context.item[itemId].site) :
+    context.page
+  for (let site of thisContext) {
     const siteMap = (await wiki.sitemap(site)).sitemap
     const found = siteMap[siteMap.findIndex(e => e.title.toLowerCase() == title.toLowerCase())]
     if (found) {
@@ -495,6 +505,9 @@ function extractContext(host, page) {
   // A page's context has two parts,
   // * the pages fork history
   // * individual item history created by being included from elswwhere
+
+  // TODO: reference items in the story should be added into the items.
+   
   const storyItems = page.story.map(i => i.id)
   return {
     page: [...new Set([ host, ...page.journal.filter(i => i.site).map(i => i.site).reverse()])],
