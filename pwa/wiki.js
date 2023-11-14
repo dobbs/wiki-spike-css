@@ -452,7 +452,7 @@ async function sitemap(domain) {
 
 async function findpage({title, itemId='', context={page: [], item: {}}}) {
   const thisContext = (itemId && Object.hasOwn(context.item, itemId)) ?
-    context.page.toSpliced(1, 0, context.item[itemId].site) :
+    context.page.toSpliced(1, 0, context.item[itemId]).flat() :
     context.page
   for (let site of thisContext) {
     const siteMap = (await wiki.sitemap(site)).sitemap
@@ -506,13 +506,17 @@ function extractContext(host, page) {
   // * the pages fork history
   // * individual item history created by being included from elswwhere
 
-  // TODO: reference items in the story should be added into the items.
-   
   const storyItems = page.story.map(i => i.id)
   return {
     page: [...new Set([ host, ...page.journal.filter(i => i.site).map(i => i.site).reverse()])],
-    item: page.journal.filter(i => i.attribution?.site).filter(i => storyItems.includes(i.id))
-                      .map(i => ({ id: i.id, site: i.attribution?.site }))
-                      .reduce((o,i) => ({ ...o, [i.id]: { site: i.site } }), {})
+    // TODO: consider if attribution or reference should come first...
+    item: [ ...page.journal.filter(i => i.attribution?.site).filter(i => storyItems.includes(i.id))
+                      .map(i => ({ id: i.id, site: i.attribution?.site })),
+            ...page.story.filter(i => i.type == 'reference')
+                      .map(i => { return {id: i.id, site: i.site}})
+          ].reduce((o,i) => {
+            o[i.id] = [...o[i.id] ?? [], i.site]
+            return o
+          }, Object.create(null))
   }
 }
